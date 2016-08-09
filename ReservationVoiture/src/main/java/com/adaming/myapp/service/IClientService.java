@@ -1,10 +1,10 @@
-package com.adaming.myapp.dao;
+package com.adaming.myapp.service;
 
 import java.util.List;
 
 import com.adaming.myapp.entities.Client;
 
-public interface IClientdao {
+public interface IClientService {
 	
 	public Client addClient(Client c);
 	public Client getClient(Long id);
