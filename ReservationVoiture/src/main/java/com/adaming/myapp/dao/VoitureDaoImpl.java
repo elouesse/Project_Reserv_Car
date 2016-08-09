@@ -65,7 +65,10 @@ public class VoitureDaoImpl implements IVoitureDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Voiture> getVoituresDisp() throws ExceptionDispoVoiture {
-		Query req = em.createQuery("from Voiture v where v.Reservation==null");
+		Query req = em.createQuery("from Voiture");
+		List<Voiture> tabV = req.getResultList();
+		req = em.createQuery("from Reservation");
+		List<Reservation> tabR = req.getResultList();
 		log.info("La liste de voitures disponibles contient "+req.getResultList().size());
 		if(req.getResultList().isEmpty())
 			throw new ExceptionDispoVoiture("");
@@ -75,7 +78,7 @@ public class VoitureDaoImpl implements IVoitureDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
-		Query req = em.createQuery("from Voiture where v.Reservation==null");
+		Query req = em.createQuery("from Voiture");
 		Query req1 = em.createQuery("from Reservation");
 		List<Voiture> tabV = req.getResultList();
 		List<Reservation> tabR = req1.getResultList();
