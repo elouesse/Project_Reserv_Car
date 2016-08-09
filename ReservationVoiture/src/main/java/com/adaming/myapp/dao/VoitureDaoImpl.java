@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.adaming.myapp.Exception.ExceptionDispoVoiture;
 import com.adaming.myapp.entities.Entretien;
 import com.adaming.myapp.entities.Reservation;
 import com.adaming.myapp.entities.Voiture;
@@ -63,15 +64,17 @@ public class VoitureDaoImpl implements IVoitureDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Voiture> getVoituresDisp() {
+	public List<Voiture> getVoituresDisp() throws ExceptionDispoVoiture {
 		Query req = em.createQuery("from Voiture v where v.Reservation==null");
 		log.info("La liste de voitures disponibles contient "+req.getResultList().size());
+		if(req.getResultList().isEmpty())
+			throw new ExceptionDispoVoiture("");
 		return req.getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) {
+	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
 		Query req = em.createQuery("from Voiture where v.Reservation==null");
 		Query req1 = em.createQuery("from Reservation");
 		List<Voiture> tabV = req.getResultList();
@@ -97,9 +100,11 @@ public class VoitureDaoImpl implements IVoitureDao {
 						tab.add(v);
 					}
 				}
-				
 			}	
+			log.info("La liste de voitures disponibles pour cette periode contient "+tab.size());
 		}
+		if(tab.isEmpty())
+			throw new ExceptionDispoVoiture("");
 		return tab;
 	}
 
@@ -115,12 +120,27 @@ public class VoitureDaoImpl implements IVoitureDao {
 		{
 			tabV.add(r.getVoiture());
 		}
+		log.info("La liste de voitures pour un retour Aujourd'hui contient "+tabV.size());
 		return tabV;
 	}
 
 	@Override
-	public void alertEntretien(Long idV, Entretien e, Double pref) {
-		if(pref<=(v.getKilometrage()+)
+	public Boolean alertEntretien(Long idV, Long idE, Double pref) {
+		Voiture v = em.find(Voiture.class, idV);
+		Entretien e = em.find(Entretien.class, idE);
+		if(e.getVoiture()!=v)
+		{
+			
+		}
+		if(pref<=(v.getKilometrage()-e.getKilommetrage()))
+		{
+			log.info("Cette voiture a besoin d'un entretien");
+			return true;
+		}
+		else
+			log.info("Cette voiture a besoin d'un entretien");
+			return false;
+		
 		
 	}
 

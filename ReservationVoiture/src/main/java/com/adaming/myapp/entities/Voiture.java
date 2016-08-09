@@ -29,8 +29,9 @@ public class Voiture {
     private String typeCarburant;
     private String etatVoiture;
     
+    
     //Association
-    @OneToMany
+    @OneToMany(mappedBy="voiture")
     private List<Reservation> reserv;
     
     //Constructors

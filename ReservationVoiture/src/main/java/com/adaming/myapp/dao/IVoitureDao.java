@@ -2,6 +2,7 @@ package com.adaming.myapp.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.adaming.myapp.Exception.ExceptionDispoVoiture;
 import com.adaming.myapp.entities.Entretien;
 import com.adaming.myapp.entities.Voiture;
 
@@ -12,9 +13,9 @@ public interface IVoitureDao {
 	public Voiture updateVoiture(Voiture c);
 	public Voiture deleteVoiture(Long id);
 	public List<Voiture> getVoitures();
-	public List<Voiture> getVoituresDisp();
-	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2);
-	public void alertEntretien(Long idV,Entretien e,Double pref);
+	public List<Voiture> getVoituresDisp() throws ExceptionDispoVoiture;
+	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture;
+	public Boolean alertEntretien(Long idV, Long idE,Double pref);
 	public List<Voiture> retourVoitures();
 
 }

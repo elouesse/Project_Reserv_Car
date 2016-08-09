@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.adaming.myapp.Exception.ExceptionDispoVoiture;
 import com.adaming.myapp.dao.IVoitureDao;
 import com.adaming.myapp.entities.Voiture;
 
@@ -22,8 +23,8 @@ public class VoitureServiceImpl implements IVoitureService {
 	}
 
 	@Override
-	public Voiture addVoiture(Voiture c) {
-		return daoVoiture.addVoiture(c);
+	public Voiture addVoiture(Voiture v) {
+		return daoVoiture.addVoiture(v);
 	}
 
 	@Override
@@ -32,8 +33,8 @@ public class VoitureServiceImpl implements IVoitureService {
 	}
 
 	@Override
-	public Voiture updateVoiture(Voiture c) {
-		return daoVoiture.updateVoiture(c);
+	public Voiture updateVoiture(Voiture v) {
+		return daoVoiture.updateVoiture(v);
 	}
 
 	@Override
@@ -47,18 +48,18 @@ public class VoitureServiceImpl implements IVoitureService {
 	}
 
 	@Override
-	public List<Voiture> getVoituresDisp() {
+	public List<Voiture> getVoituresDisp() throws ExceptionDispoVoiture {
 		return daoVoiture.getVoituresDisp();
 	}
 
 	@Override
-	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) {
+	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
 		return daoVoiture.getVoituresDispByPeriod(d1, d2);
 	}
 
 	@Override
-	public void alertEntretien(Long idV, Long idE, Double pref) {
-		// TODO Auto-generated method stub
+	public Boolean alertEntretien(Long idV, Long idE, Double pref) {
+		return daoVoiture.alertEntretien(idV, idE, pref);
 		
 	}
 
