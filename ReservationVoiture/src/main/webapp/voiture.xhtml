@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<p:dataTable var="vtr" value="#{VoitureBean.voitures}" paginator="true"
+			rows="10" styleClass="paginated">
+			<p:column headerText="Id voiture">
+				<h:outputText value="#{vtr.idvoiture}" />
+			</p:column>
+			<p:column headerText="Modele">
+				<h:outputText value="#{vtr.model}" />
+			</p:column>
+			<p:column headerText="Immatriculation">
+				<h:outputText value="#{vtr.immatricule}" />
+			</p:column>
+			<p:column headerText="Kilometrage">
+				<h:outputText value="#{vtr.kilometrage}" />
+			</p:column>
+			<p:column headerText="Actions">
+				<p:button icon="ui-icon-search">
+					<f:param name="Chercher" />
+				</p:button>
+					<p:button icon="ui-icon-pencil">
+					<f:param name="Modifier" />
+				</p:button>
+				<p:button icon="ui-icon-close">
+					<f:param name="Supprimer" />
+				</p:button>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+
+
+</h:body>
+
+
+</html>
