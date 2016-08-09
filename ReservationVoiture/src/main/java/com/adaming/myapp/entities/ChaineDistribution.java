@@ -5,10 +5,13 @@ package com.adaming.myapp.entities;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 /**
- * @author Eli
+ * @author thomas bernard
  *
  */
+@Entity
 public class ChaineDistribution extends Entretien {
 
 	public ChaineDistribution() {
