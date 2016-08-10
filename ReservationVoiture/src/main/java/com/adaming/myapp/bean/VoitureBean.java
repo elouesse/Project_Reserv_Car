@@ -43,42 +43,7 @@ public class VoitureBean {
 	private String etatVoiture;
 	
 
-	private final static String[] carburants;
-
-	private final static String[] modeles;
-
-	private final static String[] types;
-
-	private final static String[] etats;
-
-	static {
-        carburants = new String[4];
-        carburants[0] = "essence 95";
-        carburants[1] = "super 98 e10";
-        carburants[2] = "Diesel";
-        carburants[3] = "GPL";
-     
-        modeles = new String[10];
-        modeles[0] = "BMW";
-        modeles[1] = "Mercedes";
-        modeles[2] = "Volvo";
-        modeles[3] = "Audi";
-        modeles[4] = "Renault";
-        modeles[5] = "Fiat";
-        modeles[6] = "Volkswagen";
-        modeles[7] = "Honda";
-        modeles[8] = "Jaguar";
-        modeles[9] = "Ford";
-        
-        types = new String[3];
-        types[0] = "espace";
-        types[1] = "citadine";
-        types[2] = "4x4";
-        
-        etats = new String[2];
-        etats[0] = "Neuve";
-        etats[1] = "Occasion";
-    }
+	private List<String> carburants = new ArrayList<String>();
 
 	/*
 	 * METHODES

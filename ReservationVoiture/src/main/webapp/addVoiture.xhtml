@@ -15,10 +15,10 @@
 	<h:form>
 		<h:panelGrid columns="2" cellpadding="5">
 			<p:outputLabel for="carburant" value="Carburant : " />
-			<p:selectOneMenu id="carburant" value="#{VoitureBean.typeCarburant}"
+			<p:selectOneMenu id="carburant" value="#{AddVoitureBean.carburant}"
 				style="width:125px">
 				<f:selectItem itemLabel="Select One" itemValue="" />
-				<f:selectItem itemValue="#{VoitureBean.carburants}" />
+				<f:selectItems itemValue="#{AddVoitureBean.carburants}" />
 			</p:selectOneMenu>
 
 			<!-- <p:outputLabel for="phone" value="Phone:" />
