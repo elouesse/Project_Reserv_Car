@@ -18,6 +18,11 @@ import javax.persistence.OneToMany;
 @Entity
 public class Voiture {
 	
+	@Override
+	public String toString() {
+		return "Voiture [idvoiture=" + idvoiture + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idvoiture;

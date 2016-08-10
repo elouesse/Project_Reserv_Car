@@ -72,12 +72,13 @@ public class VoitureDaoImpl implements IVoitureDao {
 		req = em.createQuery("from Reservation");
 		List<Reservation> tabR = req.getResultList();
 		List<Voiture> tab = new ArrayList<Voiture>();
-		for(int i=0;i<tabV.size();i++)
+		for(Voiture v:tabV)
 		{
-			for(int  j=0;j<tabR.size();j++)
+			for(Reservation r:tabR)
 			{
-				if(tabR.get(j).getVoiture()!=tabV.get(i))
-					tab.add(tabV.get(i));
+				if(r.getVoiture()!=v)
+					if(!tab.contains(v))
+						tab.add(v);
 			}
 		}
 		log.info("La liste de voitures disponibles contient "+tab.size());
@@ -90,51 +91,26 @@ public class VoitureDaoImpl implements IVoitureDao {
 	@Override
 	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
 		
-		Query query = em.createQuery("select Distinct ID_Voiture from Reservation r where (r.dateDeRentrer>:d2 "
-				+ "AND r.dateDeRentrer <:d1) OR (r.dateDeSortie <:d1 "
-				+ "AND r.dateDeSortie >:d2) OR (r.dateDeRentrer <:d1 "
-				+ "AND r.dateDeSortie <:d2)") ;
-		
-		List<Long> tabId = query.getResultList();
-		List<Voiture> list= new ArrayList<Voiture>();
-		for (Long l : tabId){	
-			list.add(getVoiture(l));
+		Query query= em.createQuery("select Distinct voiture from Reservation r where r.dateDeSortie>:d2 "
+				+ "OR r.dateDeRentrer<:d1");
+	
+		query.setParameter("d1", d1);
+		query.setParameter("d2", d2);
+		List<Voiture>  list = query.getResultList();
+		List<Voiture>  tabV = getVoituresDisp();
+		log.info("La liste de voitures disponibles contient "+tabV.size());
+		for(Voiture v:tabV)
+		{
+			if(!list.contains(v))
+				list.add(v);
 		}
+		
 		if(list.isEmpty())
 		{
 			throw new ExceptionDispoVoiture("il n'y a aucune voiture disponible");
 		}
+		log.info("La liste de voitures disponibles contient "+list.size());
 		return list;
-		/*List<Voiture> tabV = getVoitures();
-		List<Voiture> tab = new ArrayList<Voiture>();
-		for(Voiture v:tabV)
-		{
-			for(Reservation r:v.getReserv())
-			{
-				if(r.getVoiture()==v){
-//					if(r.getDateDeSortie().before(d1)&&r.getDateDeRentrer().after(d2)
-//							||r.getDateDeSortie().after(d1)&&r.getDateDeRentrer().before(d2)
-//							||r.getDateDeSortie().before(d1)&&r.getDateDeRentrer().after(d1)
-//							||r.getDateDeSortie().before(d2)&&r.getDateDeRentrer().after(d2))
-//					{
-//						continue;
-//					}
-					if(r.getDateDeSortie().before(d1)&&r.getDateDeRentrer().before(d2)
-							||r.getDateDeSortie().after(d1)&&r.getDateDeRentrer().after(d2)
-							||r.getDateDeSortie().after(d1)&&r.getDateDeSortie().after(d2)
-							||r.getDateDeRentrer().before(d1)&&r.getDateDeRentrer().before(d2))
-					{
-						tab.add(v);
-					}
-				}
-			}	
-			log.info("La liste de voitures disponibles pour cette periode contient "+tab.size());
-		}
-		
-		if(tab.isEmpty())
-			throw new ExceptionDispoVoiture("");
-		return tab;
-		*/
 	}
 
 	@SuppressWarnings("unchecked")

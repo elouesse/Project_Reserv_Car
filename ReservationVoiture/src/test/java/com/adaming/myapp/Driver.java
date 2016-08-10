@@ -23,7 +23,8 @@ public class Driver {
 		IReservationService r = (IReservationService) context.getBean("ReservationServiceImpl");
 		SimpleDateFormat fr = new SimpleDateFormat("yyyy-MM-dd");
 		
-		System.out.println(v.getVoituresDispByPeriod(fr.parse("2016-05-02"), fr.parse("2016-05-02")));
+		System.out.println(v.getVoituresDisp());
+		System.out.println(v.getVoituresDispByPeriod(fr.parse("2016-05-03"), fr.parse("2016-05-04")));
 		
 		
 //		v.addVoiture(new Voiture("xx", "SDEK", 300.0, 8000.0, "Q", "e", "QW"));
