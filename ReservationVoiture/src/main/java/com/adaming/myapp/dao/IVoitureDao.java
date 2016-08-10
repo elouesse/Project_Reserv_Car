@@ -3,7 +3,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.adaming.myapp.Exception.ExceptionDispoVoiture;
-import com.adaming.myapp.entities.Entretien;
 import com.adaming.myapp.entities.Voiture;
 
 public interface IVoitureDao {

@@ -1,5 +1,7 @@
 package com.adaming.myapp.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,23 +71,45 @@ public class VoitureDaoImpl implements IVoitureDao {
 		List<Voiture> tabV = req.getResultList();
 		req = em.createQuery("from Reservation");
 		List<Reservation> tabR = req.getResultList();
-		log.info("La liste de voitures disponibles contient "+req.getResultList().size());
+		List<Voiture> tab = new ArrayList<Voiture>();
+		for(int i=0;i<tabV.size();i++)
+		{
+			for(int  j=0;j<tabR.size();j++)
+			{
+				if(tabR.get(j).getVoiture()!=tabV.get(i))
+					tab.add(tabV.get(i));
+			}
+		}
+		log.info("La liste de voitures disponibles contient "+tab.size());
 		if(req.getResultList().isEmpty())
 			throw new ExceptionDispoVoiture("");
-		return req.getResultList();
+		return tab;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
-		Query req = em.createQuery("from Voiture");
-		Query req1 = em.createQuery("from Reservation");
-		List<Voiture> tabV = req.getResultList();
-		List<Reservation> tabR = req1.getResultList();
+		
+		Query query = em.createQuery("select Distinct ID_Voiture from Reservation r where (r.dateDeRentrer>:d2 "
+				+ "AND r.dateDeRentrer <:d1) OR (r.dateDeSortie <:d1 "
+				+ "AND r.dateDeSortie >:d2) OR (r.dateDeRentrer <:d1 "
+				+ "AND r.dateDeSortie <:d2)") ;
+		
+		List<Long> tabId = query.getResultList();
+		List<Voiture> list= new ArrayList<Voiture>();
+		for (Long l : tabId){	
+			list.add(getVoiture(l));
+		}
+		if(list.isEmpty())
+		{
+			throw new ExceptionDispoVoiture("il n'y a aucune voiture disponible");
+		}
+		return list;
+		/*List<Voiture> tabV = getVoitures();
 		List<Voiture> tab = new ArrayList<Voiture>();
 		for(Voiture v:tabV)
 		{
-			for(Reservation r:tabR)
+			for(Reservation r:v.getReserv())
 			{
 				if(r.getVoiture()==v){
 //					if(r.getDateDeSortie().before(d1)&&r.getDateDeRentrer().after(d2)
@@ -106,9 +130,11 @@ public class VoitureDaoImpl implements IVoitureDao {
 			}	
 			log.info("La liste de voitures disponibles pour cette periode contient "+tab.size());
 		}
+		
 		if(tab.isEmpty())
 			throw new ExceptionDispoVoiture("");
 		return tab;
+		*/
 	}
 
 	@SuppressWarnings("unchecked")
@@ -127,15 +153,20 @@ public class VoitureDaoImpl implements IVoitureDao {
 		return tabV;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean alertEntretien(Long idV, Long idE, Double pref) {
 		Voiture v = em.find(Voiture.class, idV);
-		Entretien e = em.find(Entretien.class, idE);
-		if(e.getVoiture()!=v)
+		Query req = em.createQuery("from Entretien e where e.voiture.idvoiture=:x order by e.dateEntretient desc");
+		req.setParameter("x",idV);
+		List<Entretien> tab = req.getResultList();
+		log.info("L'entretien recupere est le "+tab.get(0).getIdEntretient());
+//		Entretien e = em.find(Entretien.class, idE);
+		if(tab.get(0).getVoiture()!=v)
 		{
 			
 		}
-		if(pref<=(v.getKilometrage()-e.getKilommetrage()))
+		if(pref<=(v.getKilometrage()-tab.get(0).getKilommetrage()))
 		{
 			log.info("Cette voiture a besoin d'un entretien");
 			return true;

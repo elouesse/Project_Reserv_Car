@@ -21,14 +21,13 @@ public class Driver {
 		IClientService c = (IClientService) context.getBean("ClientServiceImpl");
 		IVoitureService v = (IVoitureService) context.getBean("VoitureServiceImpl");
 		IReservationService r = (IReservationService) context.getBean("ReservationServiceImpl");
-		SimpleDateFormat fr = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat fr = new SimpleDateFormat("yyyy-MM-dd");
+		
+		System.out.println(v.getVoituresDispByPeriod(fr.parse("2016-05-02"), fr.parse("2016-05-02")));
 		
 		
-		System.out.println(v.getVoituresDisp());
-		System.out.println(v.getVoituresDispByPeriod(fr.parse("2016-05-02 09:55"), fr.parse("2016-05-02 16:55")));
-		
-		v.addVoiture(new Voiture("xx", "SDEK", 300.0, 8000.0, "Q", "e", "QW"));
-		r.addReservation(new Reservation(300.0, new Date(), fr.parse("2106-05-02 09:55"), fr.parse("2109-05-02 09:55"), "324", "sf", 23, "ws"), 1l, 1l);
+//		v.addVoiture(new Voiture("xx", "SDEK", 300.0, 8000.0, "Q", "e", "QW"));
+//		r.addReservation(new Reservation(300.0, new Date(), fr.parse("2106-05-02 09:55"), fr.parse("2109-05-02 09:55"), "324", "sf", 23, "ws"), 1l, 1l);
 
 	}
 
