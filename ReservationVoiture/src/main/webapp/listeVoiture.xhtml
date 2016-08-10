@@ -6,13 +6,32 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Liste voitures</title>
+	<h:outputStylesheet library="css" name="style.css"> </h:outputStylesheet>
 </h:head>
 
 <h:body>
 
+	<h3> Liste des voitures de l'agence</h3>
+
 	<h:form>
-		<p:dataTable var="vtr" value="#{VoitureBean.voitures}" paginator="true"
-			rows="10" styleClass="paginated">
+		<!-- <h:outputLabel class="test" for="voiture" value="Recherche par id :" style="font-weight:bold" /> -->
+		 <p:outputLabel for="advanced" value="Recherche par modele :" />
+        <p:selectManyMenu id="advanced" value="#{VoitureBean.voiture}"
+                          var="v" filter="true" filterMatchMode="contains" showCheckbox="true">
+            <f:selectItems value="#{VoitureBean.voitures}" var="vtr" itemLabel="#{vtr.model}" itemValue="#{vtr}" />
+ 
+            <p:column>
+                <h:outputText value="#{v.model}" />
+            </p:column>
+        </p:selectManyMenu>
+	</h:form>
+
+
+	<h:form>
+		<p:dataTable var="vtr" value="#{VoitureBean.voitures}"
+			paginator="true" rows="10" styleClass="paginated">
 			<p:column headerText="Id voiture">
 				<h:outputText value="#{vtr.idvoiture}" />
 			</p:column>
@@ -29,19 +48,17 @@
 				<p:button icon="ui-icon-search">
 					<f:param name="Chercher" />
 				</p:button>
-					<p:button icon="ui-icon-pencil">
+				<p:button icon="ui-icon-pencil">
 					<f:param name="Modifier" />
 				</p:button>
-				<p:button icon="ui-icon-close">
+				<p:button icon="ui-icon-trash">
 					<f:param name="Supprimer" />
+				</p:button>
+				<p:button icon="ui-icon-euro">
+					<f:param name="Chercher" />
 				</p:button>
 			</p:column>
 		</p:dataTable>
-
 	</h:form>
-
-
 </h:body>
-
-
 </html>
