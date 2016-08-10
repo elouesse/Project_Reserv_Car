@@ -14,28 +14,31 @@
 
 
 	<h:form>
-		<p:dataTable var="client" value="#{ClientBean.clients}">
+		<p:dataTable var="client" value="#{ClientB.clients}" paginator="true"
+			rows="13" styleClass="paginated">
 			<p:column headerText="Id">
 				<h:outputText value="#{client.idClient}" />
 			</p:column>
 
 			<p:column headerText="Nom">
-				<h:outputText value="#{client.nomClient}" />
+				<h:outputText value="#{client.nom}" />
 			</p:column>
 
 			<p:column headerText="Prenom">
-				<h:outputText value="#{client.prenomClient}" />
+				<h:outputText value="#{client.prenom}" />
 			</p:column>
 
-			<p:column headerText="Age">
-				<h:outputText value="#{client.ageClient}" />
+			<p:column headerText="Pays">
+				<h:outputText value="#{client.pays}" />
 			</p:column>
 
 			<p:growl id="messages" />
 			<p:column headerText="Button">
+				<p:commandButton type="button" title="Save" icon="ui-icon-wrench" />
 				<p:commandButton actionListener="#{buttonView.buttonAction}"
-					id="iconOnly" icon="ui-icon-trash" title="Icon Only" />
-
+					icon="ui-icon-trash" />
+				<p:commandButton type="button" title="Print" icon="ui-icon-search" />
+				<p:commandButton value="Facture" type="button" title="Print" icon="ui-icon-search" />
 			</p:column>
 
 		</p:dataTable>
