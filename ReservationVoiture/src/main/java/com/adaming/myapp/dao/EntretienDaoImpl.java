@@ -7,12 +7,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.stereotype.Repository;
+
 import com.adaming.myapp.entities.Agence;
+import com.adaming.myapp.entities.ChaineDistribution;
 import com.adaming.myapp.entities.Entretien;
+import com.adaming.myapp.entities.FiltreHuile;
+import com.adaming.myapp.entities.Vidange;
 import com.adaming.myapp.entities.Voiture;
 
+@Repository(value="daoEntretien")
 public class EntretienDaoImpl implements IEntretienDao {
 
+	
 	@PersistenceContext
 	private EntityManager em;	
 	
@@ -44,7 +51,7 @@ public class EntretienDaoImpl implements IEntretienDao {
 
 	@Override
 	public List<Entretien> getEntretiensOfOneCar(Long idV) {
-		Query query = em.createQuery("from Entretien e where e.voiture.idVoiture=:x");
+		Query query = em.createQuery("from Entretien e where e.voiture.idvoiture=:x");
 		query.setParameter("x", idV);
 		log.info("on recupère les entretien de la voiture : "+"a completer");
 		return query.getResultList();
@@ -65,4 +72,29 @@ public class EntretienDaoImpl implements IEntretienDao {
 		return entretien;
 	}
 
+	@Override
+	public Vidange getLastVidange(Long idV) {
+		Query query = em.createQuery("from Vidange e where e.voiture.idvoiture=:x  order by e.dateEntretient desc");
+		query.setParameter("x", idV);
+		log.info("on recupère le dernier entretien Vidange de la voiture :"+ ((Entretien) query.getResultList().get(0)).getVoiture().getModel());
+		return (Vidange) query.getResultList().get(0);
+	}
+
+	@Override
+	public ChaineDistribution getLastChaineD(Long idV) {
+		Query query = em.createQuery("from ChaineDistribution e where e.voiture.idvoiture=:x  order by e.dateEntretient desc");
+		query.setParameter("x", idV);
+		log.info("on recupère le dernier entretien ChaineDistribution de la voiture :"+ ((Entretien) query.getResultList().get(0)).getVoiture().getModel());
+		return (ChaineDistribution) query.getResultList().get(0);
+	}
+
+	@Override
+	public FiltreHuile getLastFilteH(Long idV) {
+		Query query = em.createQuery("from FiltreHuile e where e.voiture.idvoiture=:x  order by e.dateEntretient desc");
+		query.setParameter("x", idV);
+		log.info("on recupère le dernier entretien FiltreHuile de la voiture :"+ ((Entretien) query.getResultList().get(0)).getVoiture().getModel());
+		return (FiltreHuile) query.getResultList().get(0);
+	}
+
+	
 }

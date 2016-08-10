@@ -77,8 +77,10 @@ public class VoitureDaoImpl implements IVoitureDao {
 			for(Reservation r:tabR)
 			{
 				if(r.getVoiture()!=v)
+				{
 					if(!tab.contains(v))
 						tab.add(v);
+				}
 			}
 		}
 		log.info("La liste de voitures disponibles contient "+tab.size());

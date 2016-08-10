@@ -1,4 +1,4 @@
-package com.adaming.myapp.dao;
+package com.adaming.myapp.service;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.adaming.myapp.entities.Entretien;
 import com.adaming.myapp.entities.FiltreHuile;
 import com.adaming.myapp.entities.Vidange;
 
-public interface IEntretienDao {
+public interface IEntretienService {
 
 	
 	
