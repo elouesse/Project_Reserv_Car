@@ -20,68 +20,68 @@ public class EntretienServiceImpl implements IEntretienService{
 	
 	
 	
-	
-	private IEntretienDao dao;
+	@Autowired
+	private IEntretienDao daoEntretien;
 
 	Logger log = Logger.getLogger("EntretienServiceImpl");
 	
 	
-	public void setDao(IEntretienDao dao) {
-		this.dao = dao;
-		log.info("<-----------------dao Entretien injected------------------>");
+	
+	public void setDaoEntretien(IEntretienDao daoEntretien) {
+		this.daoEntretien = daoEntretien;
 	}
 
 	@Override
 	public Entretien addEntretien(Entretien entretien, Long idV) {
 		// TODO Auto-generated method stub
-		return dao.addEntretien(entretien, idV);
+		return daoEntretien.addEntretien(entretien, idV);
 	}
 
 	@Override
 	public Entretien getEntretienById(Long idE) {
 		// TODO Auto-generated method stub
-		return dao.getEntretienById(idE);
+		return daoEntretien.getEntretienById(idE);
 	}
 
 	@Override
 	public List<Entretien> getEntretiens() {
 		// TODO Auto-generated method stub
-		return dao.getEntretiens();
+		return daoEntretien.getEntretiens();
 	}
 
 	@Override
 	public List<Entretien> getEntretiensOfOneCar(Long idV) {
 		// TODO Auto-generated method stub
-		return dao.getEntretiensOfOneCar(idV);
+		return daoEntretien.getEntretiensOfOneCar(idV);
 	}
 
 	@Override
 	public Entretien deleteEntretien(Long idE) {
 		// TODO Auto-generated method stub
-		return dao.deleteEntretien(idE);
+		return daoEntretien.deleteEntretien(idE);
 	}
 
 	@Override
 	public Entretien updateEntretien(Entretien entretien) {
 		// TODO Auto-generated method stub
-		return dao.updateEntretien(entretien);
+		return daoEntretien.updateEntretien(entretien);
 	}
 
 	@Override
 	public Vidange getLastVidange(Long idV) {
 		// TODO Auto-generated method stub
-		return dao.getLastVidange(idV);
+		return daoEntretien.getLastVidange(idV);
 	}
 
 	@Override
 	public ChaineDistribution getLastChaineD(Long idV) {
 		// TODO Auto-generated method stub
-		return dao.getLastChaineD(idV);
+		return daoEntretien.getLastChaineD(idV);
 	}
 
 	@Override
 	public FiltreHuile getLastFilteH(Long idV) {
 		// TODO Auto-generated method stub
-		return dao.getLastFilteH(idV);
+		return daoEntretien.getLastFilteH(idV);
 	}
 }

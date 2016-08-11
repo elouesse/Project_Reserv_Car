@@ -13,40 +13,41 @@ import com.adaming.myapp.entities.Agence;
 
 @Service
 @Transactional
-public class AgenceServiceImpl implements IAgenceService{
-
-	private IAgenceDao dao;
+public class AgenceServiceImpl implements IAgenceService{	
+	@Autowired
+	private IAgenceDao daoAgence;
 	
 	Logger log = Logger.getLogger("AgenceServiceImpl");
 
 
-	public void setDao(IAgenceDao dao) {
-		this.dao = dao;
-		log.info("<-----------------dao Agence injected------------------>");
+	
+
+	public void setDaoAgence(IAgenceDao daoAgence) {
+		this.daoAgence = daoAgence;
 	}
 
 	@Override
 	public Agence addAgence(Agence agence) {
 		// TODO Auto-generated method stub
-		return dao.addAgence(agence);
+		return daoAgence.addAgence(agence);
 	}
 
 	@Override
 	public List<Agence> getAgences() {
 		// TODO Auto-generated method stub
-		return dao.getAgences();
+		return daoAgence.getAgences();
 	}
 
 	@Override
 	public Agence getAgenceById(Long idA) {
 		// TODO Auto-generated method stub
-		return dao.getAgenceById(idA);
+		return daoAgence.getAgenceById(idA);
 	}
 
 	@Override
 	public Agence updateAgence(Agence agence) {
 		// TODO Auto-generated method stub
-		return dao.updateAgence(agence);
+		return daoAgence.updateAgence(agence);
 	}
 	
 }

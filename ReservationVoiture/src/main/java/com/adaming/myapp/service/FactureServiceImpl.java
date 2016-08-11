@@ -3,6 +3,7 @@ package com.adaming.myapp.service;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,49 +15,49 @@ import com.adaming.myapp.entities.Facture;
 public class FactureServiceImpl implements IFactureService{
 
 	
-	
-	private IFactureDao dao;
+	@Autowired
+	private IFactureDao daoFacture;
 	Logger log = Logger.getLogger("FactureServiceImpl");
 
-	public void setDao(IFactureDao dao) {
-		this.dao = dao;
-		log.info("<-----------------dao Facture injected------------------>");
 
+
+	public void setDaoFacture(IFactureDao daoFacture) {
+		this.daoFacture = daoFacture;
 	}
 
 	@Override
 	public Facture addFacture(Long idA, Long idR, Facture f) {
 		// TODO Auto-generated method stub
-		return dao.addFacture(idA, idR, f);
+		return daoFacture.addFacture(idA, idR, f);
 	}
 
 	@Override
 	public Facture getFactureById(Long idF) {
 		// TODO Auto-generated method stub
-		return dao.getFactureById(idF);
+		return daoFacture.getFactureById(idF);
 	}
 
 	@Override
 	public List<Facture> getFactures() {
 		// TODO Auto-generated method stub
-		return dao.getFactures();
+		return daoFacture.getFactures();
 	}
 
 	@Override
 	public List<Facture> getFactureOfOneCar(Long idC) {
 		// TODO Auto-generated method stub
-		return dao.getFactureOfOneCar(idC);
+		return daoFacture.getFactureOfOneCar(idC);
 	}
 
 	@Override
 	public List<Facture> getFactureOfOneClient(Long idC) {
 		// TODO Auto-generated method stub
-		return dao.getFactureOfOneClient(idC);
+		return daoFacture.getFactureOfOneClient(idC);
 	}
 
 	@Override
 	public double coutFacture(Long idF) {
-		Facture f = dao.getFactureById(idF);
+		Facture f = daoFacture.getFactureById(idF);
 		return f.getReservation().getPrix();
 	}
 
@@ -64,7 +65,7 @@ public class FactureServiceImpl implements IFactureService{
 	public double coutFacturesFromClient(Long idC) {
 		
 		double prixTot=0;
-		List<Facture> list = dao.getFactureOfOneClient(idC);
+		List<Facture> list = daoFacture.getFactureOfOneClient(idC);
 		for(Facture f : list)
 		{
 			prixTot= prixTot+f.getReservation().getPrix();
@@ -76,7 +77,7 @@ public class FactureServiceImpl implements IFactureService{
 	@Override
 	public double coutFacturesFromCar(Long idV) {
 		double prixTot=0;
-		List<Facture> list = dao.getFactureOfOneCar(idV);
+		List<Facture> list = daoFacture.getFactureOfOneCar(idV);
 		for(Facture f : list)
 		{
 			prixTot= prixTot+f.getReservation().getPrix();
