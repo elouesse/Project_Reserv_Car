@@ -1,64 +1,319 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
+
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+
 	xmlns:f="http://java.sun.com/jsf/core"
+
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
 
 <h:head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
 	<title>Liste voitures</title>
-	<h:outputStylesheet library="css" name="style.css"> </h:outputStylesheet>
+
+	<h:outputStylesheet library="css" name="style.css">
+
+	</h:outputStylesheet>
+
 </h:head>
+
+
 
 <h:body>
 
-	<h3> Liste des voitures de l'agence</h3>
+
 
 	<h:form>
-		<!-- <h:outputLabel class="test" for="voiture" value="Recherche par id :" style="font-weight:bold" /> -->
-		 <p:outputLabel for="advanced" value="Recherche par modele :" />
-        <p:selectManyMenu id="advanced" value="#{VoitureBean.voiture}"
-                          var="v" filter="true" filterMatchMode="contains" showCheckbox="true">
-            <f:selectItems value="#{VoitureBean.voitures}" var="vtr" itemLabel="#{vtr.model}" itemValue="#{vtr}" />
- 
-            <p:column>
-                <h:outputText value="#{v.model}" />
-            </p:column>
-        </p:selectManyMenu>
+
+		<p:commandButton value="Rafraichir" icon="ui-icon-refresh"
+
+			actionListener="#{VoitureBean.refreshListe}"></p:commandButton>
+
 	</h:form>
 
 
+
 	<h:form>
+
 		<p:dataTable var="vtr" value="#{VoitureBean.voitures}"
-			paginator="true" rows="10" styleClass="paginated">
-			<p:column headerText="Id voiture">
+
+			paginator="true" rows="10" styleClass="paginated" id="carList">
+
+			<f:facet name="header">Liste des voitures
+
+				</f:facet>
+
+			<p:column headerText="Id voiture"
+
+				style="width:80px;text-align: center">
+
 				<h:outputText value="#{vtr.idvoiture}" />
+
 			</p:column>
-			<p:column headerText="Modele">
+
+			<p:column headerText="Modele" style="width:80px;text-align: center">
+
 				<h:outputText value="#{vtr.model}" />
+
 			</p:column>
-			<p:column headerText="Immatriculation">
+
+			<p:column headerText="Immatriculation"
+
+				style="width:80px;text-align: center">
+
 				<h:outputText value="#{vtr.immatricule}" />
+
 			</p:column>
-			<p:column headerText="Kilometrage">
+
+			<p:column headerText="Kilometrage"
+
+				style="width:80px;text-align: center">
+
 				<h:outputText value="#{vtr.kilometrage}" />
+
 			</p:column>
-			<p:column headerText="Actions">
-				<p:button icon="ui-icon-search">
-					<f:param name="Chercher" />
-				</p:button>
-				<p:button icon="ui-icon-pencil">
-					<f:param name="Modifier" />
-				</p:button>
-				<p:button icon="ui-icon-trash">
-					<f:param name="Supprimer" />
-				</p:button>
-				<p:button icon="ui-icon-euro">
-					<f:param name="Chercher" />
-				</p:button>
+
+
+
+			<!-- BARRE D'ACTION -->
+
+			<p:column headerText="Actions" style="width:120px;text-align: center">
+
+
+
+				<!-- BOUTON POP-UP INFO -->
+
+				<p:commandButton update="voitureDetail"
+
+					oncomplete="PF('carOP').show('#{VoitureBean.voiture.idvoiture}')"
+
+					icon="ui-icon-info" id="info">
+
+					<f:setPropertyActionListener value="#{vtr}"
+
+						target="#{VoitureBean.voiture}" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipInfo" for="info"
+
+					value="Afficher les infos de la voiture" position="top" />
+
+
+
+				<p:overlayPanel widgetVar="carOP" showEffect="fade"
+
+					hideEffect="explode" dismissable="false" showCloseIcon="true"
+
+					id="voitureDetail">
+
+					<p:outputPanel style="text-align:left;">
+
+						<p:panelGrid columns="2" columnClasses="label,value">
+
+							<h:outputText value="Id:" />
+
+							<h:outputText value="#{VoitureBean.voiture.idvoiture}" />
+
+
+
+							<h:outputText value="Prix" />
+
+							<h:outputText value="#{VoitureBean.voiture.prix}" />
+
+
+
+							<h:outputText value="Type" />
+
+							<h:outputText value="#{VoitureBean.voiture.typeVoiture}" />
+
+
+
+							<h:outputText value="Carburant" />
+
+							<h:outputText value="#{VoitureBean.voiture.typeCarburant}" />
+
+
+
+							<h:outputText value="Etat" />
+
+							<h:outputText value="#{VoitureBean.voiture.etatVoiture}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</p:overlayPanel>
+
+				<!-- FIN POP-UP INFO -->
+
+
+
+				<!-- BOUTON POP-UP ENTRETIEN -->
+
+				<p:commandButton action="#{VoitureBean.getEntretien}"
+
+					update="entretienDetail" icon="ui-icon-gear" id="entretien"
+
+					oncomplete="PF('entretienOP').show('#{VoitureBean.entretiens}')">
+
+					<f:setPropertyActionListener value="#{vtr.idvoiture}"
+
+						target="#{VoitureBean.idvoiture}" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipEntretien" for="entretien"
+
+					value="Afficher les entretiens de la voiture" position="top" />
+
+
+
+				<p:overlayPanel widgetVar="entretienOP" showEffect="fade"
+
+					hideEffect="explode" dismissable="false" showCloseIcon="true"
+
+					id="entretienDetail">
+
+					<p:outputPanel style="text-align:left;">
+
+						<p:dataList value="#{VoitureBean.entretiens}" var="ents"
+
+							type="ordered">
+
+							<f:facet name="header">
+
+           						 Entretiens
+
+        					</f:facet>
+
+        					#{ents.typeEntretient}, prochain : #{ents.kilommetrage}, date : #{ents.dateEntretient}, prix : #{ents.prixEntrtient}
+
+    					</p:dataList>
+
+					</p:outputPanel>
+
+				</p:overlayPanel>
+
+				<!-- FIN POP-UP ENTRETIEN -->
+
+
+
+				<!-- BOUTON POP-UP KILOMETRAGE -->
+
+				<p:commandButton icon="ui-icon-pencil" id="kilometrage">
+
+					<f:setPropertyActionListener value="#{vtr}"
+
+						target="#{VoitureBean.voiture}" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipKilometrage" for="kilometrage"
+
+					value="Modifier le kilometrage de la voiture" position="top" />
+
+				<!-- FIN POP-UP KILOMETRAGE -->
+
+
+
+				<!-- BOUTON POP-UP MODIFIER LA VOITURE -->
+
+				<p:commandButton icon="ui-icon-wrench" id="modifier"
+
+					action="updateVoiture">
+
+					<f:setPropertyActionListener value="#{vtr}"
+
+						target="#{VoitureBean.voiture}" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipModifier" for="modifier"
+
+					value="Modifier les attributs de la voiture" position="top" />
+
+				<!-- FIN POP-UP MODIFIER -->
+
+
+
+				<!-- BOUTON POP-UP SUPPRIMER LA VOITURE -->
+
+				<p:growl id="delete" showDetail="true" life="4000" />
+
+				<p:commandButton action="#{VoitureBean.deleteVoiture}"
+
+					icon="ui-icon-circle-close" id="supprimer" update="delete">
+
+					<f:setPropertyActionListener value="#{vtr.idvoiture}"
+
+						target="#{VoitureBean.idvoiture}" />
+
+					<p:confirm header="Confirmation" message="Etes-vous sur?"
+
+						icon="ui-icon-alert" />
+
+					<f:ajax update="carList" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipSupprimer" for="supprimer"
+
+					value="Supprimer la voiture (DANGEREUX)" position="top" />
+
+
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+					<p:commandButton value="Oui" type="button"
+
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+
+						update=":form:carList" />
+
+					<p:commandButton value="Annuler" type="button"
+
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+				</p:confirmDialog>
+
+
+
+				<!-- FIN POP-UP SUPPRIMER -->
+
+
+
+				<!-- BOUTON POP-UP AFFICHER LA FACTURE -->
+
+				<p:commandButton icon="ui-icon-script" id="facture">
+
+					<f:param name="Facture" />
+
+				</p:commandButton>
+
+				<p:tooltip id="toolTipFacture" for="facture"
+
+					value="Afficher les factures de la voiture" position="top" />
+
+				<!-- FIN POP-UP FACTURE -->
+
 			</p:column>
+
 		</p:dataTable>
+
+
+
 	</h:form>
+
+
+
 </h:body>
+
 </html>

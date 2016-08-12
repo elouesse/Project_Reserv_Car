@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+
+	xmlns:f="http://java.sun.com/jsf/core"
+
+	xmlns:h="http://java.sun.com/jsf/html"
+
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+	<title>Mis a jour des voitures</title>
+
+	<h:outputStylesheet library="css" name="style.css">
+
+	</h:outputStylesheet>
+
+
+
+</h:head>
+
+
+
+<h:body>
+
+	<h:form>
+
+		<!-- DEBUT PANNEAU -->
+
+		<p:fieldset>
+
+			<p:panelGrid id="panelGrid" columns="4" cellpadding="5" layout="grid"
+
+				styleClass="ui-panelgrid-blank">
+
+				<f:facet name="header">
+
+					<h:outputText value="Mis a jour de la voiture"
+
+						style="color:black;" />
+
+				</f:facet>
+
+				
+
+				<p:outputLabel value="Attributs" style="color:black;"/>
+
+				<p:outputLabel value="Nouvelle valeur" style="color:blue;"/>
+
+				<p:outputLabel value="Valeur actuelle" style="color:green;"/>
+
+				<p:outputLabel/>
+
+
+
+				<p:outputLabel for="carburant" value="Carburant : " />
+
+				<p:selectOneMenu id="carburant" value="#{AddVoitureBean.carburant}"
+
+					style="width:125px">
+
+					<f:selectItems value="#{AddVoitureBean.carburants}" />
+
+					<p:ajax update="carburantData" />
+
+				</p:selectOneMenu>
+
+				<p:inputText value="#{AddVoitureBean.voiture.carburantType}" disabled="true" id="carburantData"/>
+
+				<p:message for="carburant" />
+
+
+
+				<p:outputLabel for="modele" value="Modele : " />
+
+				<p:selectOneMenu id="modele" value="#{AddVoitureBean.modele}"
+
+					style="width:125px">
+
+					<f:selectItems value="#{AddVoitureBean.modeles}" />
+
+					<!-- <p:ajax event="blur" update="modeleValue" /> -->
+
+				</p:selectOneMenu>
+
+				<p:inputText value="" disabled="true" id="modeleData"/>
+
+				<p:message for="modele" />
+
+
+
+				<p:outputLabel for="etat" value="Etat du vehicule : " />
+
+				<p:selectOneMenu id="etat" value="#{AddVoitureBean.etat}"
+
+					style="width:125px">
+
+					<f:selectItems value="#{AddVoitureBean.etats}" />
+
+					<!-- <p:ajax event="blur" update="etatValue" /> -->
+
+				</p:selectOneMenu>
+
+				<p:inputText value="" disabled="true" id="etatData"/>
+
+				<p:message for="etat" />
+
+
+
+				<p:outputLabel for="type" value="Type : " />
+
+				<p:selectOneMenu id="type" value="#{AddVoitureBean.type}"
+
+					style="width:125px">
+
+					<f:selectItems value="#{AddVoitureBean.types}" />
+
+					<!-- <p:ajax event="blur" update="typeValue" /> -->
+
+				</p:selectOneMenu>
+
+				<p:inputText value="" disabled="true" id="typeData"/>
+
+				<p:message for="type" />
+
+
+
+				<p:outputLabel for="immatriculation" value="Immatriculation :" />
+
+				<p:inputMask id="immatriculation"
+
+					value="#{AddVoitureBean.immatriculation}" mask="aa-999-aa">
+
+					<!-- <p:ajax event="blur" update="immatriculationValue" /> -->
+
+				</p:inputMask>
+
+				<p:inputText value="" disabled="true" id="immatriculationData"/>
+
+				<p:message for="immatriculation" />
+
+
+
+				<p:outputLabel for="kilometrage" value="Kilometrage :" />
+
+				<p:inputNumber id="kilometrage"
+
+					value="#{AddVoitureBean.kilometrage}">
+
+					<!-- <p:ajax event="blur" update="kilometrageValue" /> -->
+
+				</p:inputNumber>
+
+				<p:inputText value="" disabled="true" id="kilometrageData"/>
+
+				<p:message for="kilometrage" />
+
+
+
+				<p:outputLabel for="prix" value="Prix d'achat :" />
+
+				<p:inputNumber id="prix" value="#{AddVoitureBean.prix}">
+
+					<!-- <p:ajax event="blur" update="prixValue" /> -->
+
+				</p:inputNumber>
+
+				<p:inputText value="" disabled="true" id="prixData"/>
+
+				<p:message for="prix" />
+
+
+
+				<p:commandButton id="revenir" value="Revenir" action="listeVoiture?faces-redirect=true" icon="ui-icon-arrowreturnthick-1-w">
+
+					<f:param />
+
+				</p:commandButton>
+
+				<p:commandButton id="update" value="Mettre a jour" type="submit" icon="ui-icon-check" update="updateConfirmation"/>
+
+				<p:commandButton value="Annuler" type="reset" icon="ui-icon-close" />
+
+				<p:outputLabel value="" />
+
+			</p:panelGrid>
+
+		</p:fieldset>
+
+		<!-- FIN PANNEAU -->
+
+		
+
+		<p:growl id="updateConfirmation" showDetail="true" life="2000"/>
+
+		
+
+	</h:form>
+
+
+
+</h:body>
+
+
+
+
+
+</html>

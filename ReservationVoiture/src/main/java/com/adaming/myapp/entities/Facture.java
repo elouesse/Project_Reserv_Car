@@ -24,7 +24,7 @@ public class Facture {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idFacture;
-	private Date DateDeFacturation;
+	private Date dateDeFacturation;
 	
 	//association
 	@OneToOne
@@ -40,7 +40,7 @@ public class Facture {
 	}
 	public Facture(Date dateDeFacturation) {
 		super();
-		DateDeFacturation = dateDeFacturation;
+		this.dateDeFacturation = dateDeFacturation;
 	}
 	//getter and setter
 	public Long getIdFacture() {
@@ -50,10 +50,10 @@ public class Facture {
 		this.idFacture = idFacture;
 	}
 	public Date getDateDeFacturation() {
-		return DateDeFacturation;
+		return dateDeFacturation;
 	}
 	public void setDateDeFacturation(Date dateDeFacturation) {
-		DateDeFacturation = dateDeFacturation;
+		this.dateDeFacturation = dateDeFacturation;
 	}
 	public Reservation getReservation() {
 		return reservation;

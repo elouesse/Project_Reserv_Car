@@ -1,74 +1,299 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
+
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+
 	xmlns:f="http://java.sun.com/jsf/core"
+
 	xmlns:h="http://java.sun.com/jsf/html"
+
 	xmlns:p="http://primefaces.org/ui">
 
+
+
 <h:head>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
 	<title>Ajouter une voiture</title>
+
 </h:head>
+
+
 
 <h:body>
 
+
+
+	<!-- FORMULAIRE AJOUTER -->
+
 	<h:form>
-		<h:panelGrid columns="2" cellpadding="5">
-			<p:outputLabel for="carburant" value="Carburant : " />
-			<p:selectOneMenu id="carburant" value="#{AddVoitureBean.carburant}"
-				style="width:125px">
-				<f:selectItem itemLabel="Select One" itemValue="" />
-				<f:selectItems itemValue="#{AddVoitureBean.carburants}" />
-			</p:selectOneMenu>
 
-			<!-- <p:outputLabel for="phone" value="Phone:" />
-			<p:inputMask id="phone" value="#{maskView.phone}"
-				mask="(999) 999-9999" />
 
-			<p:outputLabel for="phoneWithExt" value="Phone with Ext:" />
-			<p:inputMask id="phoneWithExt" value="#{maskView.phoneExt}"
-				mask="(999) 999-9999? x99999" />
 
-			<p:outputLabel for="taxId" value="Tax Id:" />
-			<p:inputMask id="taxId" value="#{maskView.taxId}" mask="99-9999999" />
+		<!-- DEBUT PANNEAU -->
 
-			<p:outputLabel for="ssn" value="SSN:" />
-			<p:inputMask id="ssn" value="#{maskView.ssn}" mask="999-99-9999" />
+		<p:fieldset>
 
-			<p:outputLabel for="key" value="Product Key: " />
-			<p:inputMask id="key" value="#{maskView.productKey}"
-				mask="a*-999-a999" />
+			<p:panelGrid id="panelGrid" columns="3" cellpadding="5" layout="grid"
 
-			<p:commandButton value="Reset" type="reset" />
-			<p:commandButton value="Submit" update="display"
-				oncomplete="PF('dlg').show()" /> -->
-		</h:panelGrid>
+				styleClass="ui-panelgrid-blank">
 
-		<!-- <p:dialog widgetVar="dlg" modal="true" resizable="false"
-			header="Values" showEffect="fade">
-			<p:panelGrid id="display" columns="2" columnClasses="label,value">
-				<h:outputText value="Date: " />
-				<h:outputText id="dateValue" value="#{maskView.date}" />
+				<f:facet name="header">
 
-				<h:outputText value="Phone: " />
-				<h:outputText id="phoneValue" value="#{maskView.phone}" />
+					<h:outputText value="Formulaire" style="color:black" />
 
-				<h:outputText value="Phone with Ext: " />
-				<h:outputText id="phoneWithExtValue" value="#{maskView.phoneExt}" />
+				</f:facet>
 
-				<h:outputText value="taxId: " />
-				<h:outputText id="taxValue" value="#{maskView.taxId}" />
+				<p:outputLabel for="carburant" value="Carburant : " />
 
-				<h:outputText value="SSN: " />
-				<h:outputText id="ssnValue" value="#{maskView.ssn}" />
+				<p:selectOneMenu id="carburant" value="#{AddVoitureBean.carburant}"
 
-				<h:outputText value="Product Key: " />
-				<h:outputText id="keyValue" value="#{maskView.productKey}" />
+					style="width:125px">
+
+					<f:selectItem itemLabel="Selectionner" itemValue="" />
+
+					<f:selectItems value="#{AddVoitureBean.carburants}" />
+
+					<p:ajax event="blur" update="carburantValue" />
+
+				</p:selectOneMenu>
+
+				<p:message for="carburant" />
+
+
+
+				<p:outputLabel for="modele" value="Modele : " />
+
+				<p:selectOneMenu id="modele" value="#{AddVoitureBean.modele}"
+
+					style="width:125px">
+
+					<f:selectItem itemLabel="Selectionner" itemValue="" />
+
+					<f:selectItems value="#{AddVoitureBean.modeles}" />
+
+					<p:ajax event="blur" update="modeleValue" />
+
+				</p:selectOneMenu>
+
+				<p:message for="modele" />
+
+
+
+				<p:outputLabel for="etat" value="Etat du vehicule : " />
+
+				<p:selectOneMenu id="etat" value="#{AddVoitureBean.etat}"
+
+					style="width:125px">
+
+					<f:selectItem itemLabel="Selectionner" itemValue="" />
+
+					<f:selectItems value="#{AddVoitureBean.etats}" />
+
+					<p:ajax event="blur" update="etatValue" />
+
+				</p:selectOneMenu>
+
+				<p:message for="etat" />
+
+
+
+				<p:outputLabel for="type" value="Type : " />
+
+				<p:selectOneMenu id="type" value="#{AddVoitureBean.type}"
+
+					style="width:125px">
+
+					<f:selectItem itemLabel="Selectionner" itemValue="" />
+
+					<f:selectItems value="#{AddVoitureBean.types}" />
+
+					<p:ajax event="blur" update="typeValue" />
+
+				</p:selectOneMenu>
+
+				<p:message for="type" />
+
+
+
+				<p:outputLabel for="immatriculation" value="Immatriculation :" />
+
+				<p:inputMask id="immatriculation"
+
+					value="#{AddVoitureBean.immatriculation}" mask="aa-999-aa"
+
+					requiredMessage="Immatriculation obligatoire" required="true">
+
+					<p:ajax event="blur" update="immatriculationValue" />
+
+				</p:inputMask>
+
+				<!-- <p:message for="immatriculation" /> -->
+
+
+
+				<p:outputLabel for="kilometrage" value="Kilometrage :" />
+
+				<p:inputNumber id="kilometrage"
+
+					value="#{AddVoitureBean.kilometrage}"
+
+					requiredMessage="kilometrage obligatoire" required="true">
+
+					<p:ajax event="blur" update="kilometrageValue" />
+
+				</p:inputNumber>
+
+				<!-- <p:message for="kilometrage" /> -->
+
+
+
+				<p:outputLabel for="prix" value="Prix d'achat :" />
+
+				<p:inputNumber id="prix" value="#{AddVoitureBean.prix}"
+
+					requiredMessage="Prix obligatoire" required="true">
+
+					<p:ajax event="blur" update="prixValue" />
+
+				</p:inputNumber>
+
+				<!-- <p:message for="prix" /> -->
+
+
+
+				<p:commandButton type="reset" id="revenir" value="Revenir"
+
+					action="listeVoiture?faces-redirect=true" icon="ui-icon-arrowreturnthick-1-w">
+
+					<f:param />
+
+				</p:commandButton>
+
+				<p:commandButton value="Sauvegarder"
+
+					action="#{AddVoitureBean.addVoiture}" update="save"
+
+					actionListener="#{AddVoitureBean.confirmationAdd}"
+
+					icon="ui-icon-check" onsuccess="PF('dlg').show()">
+
+					<p:confirm header="Confirmation" message="Etes-vous sur?"
+
+						icon="ui-icon-alert" update="display" />
+
+				</p:commandButton>
+
+				<p:commandButton value="Annuler" type="reset" icon="ui-icon-close" />
+
+
+
 			</p:panelGrid>
-		</p:dialog> -->
+
+		</p:fieldset>
+
+		<!-- FIN PANNEAU -->
+
+
+
+		<p:messages id="messages" showDetail="false" autoUpdate="true"
+
+			closable="true" />
+
+		<p:growl id="save" showDetail="true" life="2000" />
+
+
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+			<p:commandButton value="Oui" type="button"
+
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+
+				update=":form:carDetail" />
+
+			<p:commandButton value="Annuler" type="button"
+
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+		</p:confirmDialog>
+
+
+
+		<p:dialog header="Recapitulatif" widgetVar="dlg" modal="true"
+
+			resizable="false" showEffect="fade">
+
+			<p:outputPanel id="carDetail" style="text-align:center;">
+
+				<p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+					<h:outputText value="Carburant :" />
+
+					<h:outputText id="carburantValue"
+
+						value="#{AddVoitureBean.carburant}" />
+
+
+
+					<h:outputText value="Modele :" />
+
+					<h:outputText id="modeleValue" value="#{AddVoitureBean.modele}" />
+
+
+
+					<h:outputText value="Etat :" />
+
+					<h:outputText id="etatValue" value="#{AddVoitureBean.etat}" />
+
+
+
+					<h:outputText value="Type :" />
+
+					<h:outputText id="typeValue" value="#{AddVoitureBean.type}" />
+
+
+
+					<h:outputText value="Immatriculation" />
+
+					<h:outputText id="immatriculationValue"
+
+						value="#{AddVoitureBean.immatriculation}" />
+
+
+
+					<h:outputText value="Kilometrage :" />
+
+					<h:outputText id="kilometrageValue"
+
+						value="#{AddVoitureBean.kilometrage}" />
+
+
+
+					<h:outputText value="Prix :" />
+
+					<h:outputText id="prixValue" value="#{AddVoitureBean.prix}" />
+
+				</p:panelGrid>
+
+			</p:outputPanel>
+
+		</p:dialog>
+
+
+
 	</h:form>
+
+	<!-- FIN FORMULAIRE AJOUTER -->
+
+
+
 
 
 </h:body>
+
+
 
 </html>
