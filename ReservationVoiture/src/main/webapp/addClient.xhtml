@@ -1,11 +1,117 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Insert title here</title>
-</head>
-<body>
+<title>Ajouter client</title>
+<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<h:body>
 
-</body>
+	<h:form>
+
+		<p:fieldset>
+		
+		
+			
+
+			<table>
+			
+				<tr>
+					<td><h:outputText value="Nom" /></td>
+					<td><p:inputText id="nom" requiredMessage="Indiquez nom!"
+							required="true" value="#{ClientB.nom}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Prénom" /></td>
+					<td><p:inputText id="prenom"
+							requiredMessage="Indiquez prénom!" required="true"
+							value="#{ClientB.prenom}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Date de naissance" /></td>
+					<td>
+						<!-- <h:inputText id="dateDeNaissance"
+						requiredMessage="Dateeeeeeeeee" required="true"
+						value="#{ClientB.dateDeNaissance}"> --> <!-- <f:convertDateTime pattern="yyyy/MM/dd" /> -->
+						<p:calendar id="dateDeNaissance" locale="fr" required="true"
+							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
+							value="#{ClientB.dateDeNaissance}">
+						</p:calendar>
+					</td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Tél" /></td>
+					<td><p:inputText id="tel" requiredMessage="Indiquez numéro!"
+							required="true"  value="#{ClientB.numeroTel}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="N°permis" /></td>
+					<td><p:inputText id="numpermis" requiredMessage="Indiquez n°!"
+							required="true" value="#{ClientB.numeroPermis}" /></td>
+
+				</tr>
+				<tr>
+					<td><h:outputText value="Adresse" /></td>
+					<td><p:inputText id="adr" requiredMessage="Indiquez adresse!"
+							required="true" value="#{ClientB.adressPostal}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Mail" /></td>
+					<td><p:inputText id="mail" requiredMessage="Indiquez mail!"
+							required="true" value="#{ClientB.mail}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Pays" /></td>
+					<td><p:inputText id="pays" requiredMessage="Indiquez pays!"
+							required="true" value="#{ClientB.pays}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Date de délivrance" /></td>
+					<td><p:calendar id="dateD" locale="fr" required="true"
+							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
+							value="#{ClientB.dateDeDelivrance}">
+						</p:calendar></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Lieu de naissance" /></td>
+					<td><p:inputText id="lieu" requiredMessage="Indiquez lieu!"
+							required="true" value="#{ClientB.lieuDeNaissance}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Délivré par" /></td>
+					<td><p:inputText id="del" requiredMessage="Remplir champ!"
+							required="true" value="#{ClientB.delivrerPar}" /></td>
+			</tr>
+
+
+
+			</table>
+
+			<p:growl id="message" showDetail="true" />
+
+			<p:commandButton action="#{ClientB.addClient}" value="Enregistrer"
+				actionListener="#{ClientB.destroyWorld}" update="message">
+				<p:confirm header="Confirmation" message="Are you sure?"
+					icon="ui-icon-alert" />
+			</p:commandButton>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Yes" actionListener="#{ClientB.addClient}"
+					type="button" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+		</p:fieldset>
+	</h:form>
+
+
+
+</h:body>
 </html>

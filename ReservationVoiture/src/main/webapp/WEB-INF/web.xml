@@ -9,7 +9,12 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:app.xml</param-value>
 	</context-param>
-
+	
+	<!-- choisir un theme -->
+	<context-param>
+	<param-name>primefaces.THEME</param-name>
+	<param-value>sunny</param-value>
+	</context-param>
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

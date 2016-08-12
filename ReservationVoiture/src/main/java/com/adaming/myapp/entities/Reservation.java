@@ -55,8 +55,8 @@ public class Reservation {
 	}
 	
 	public Reservation(double prix, Date dateDeReservation, Date dateDeRentrer,
-			Date dateDeSortie, String heureDeSortie, String heureDeRentrer,
-			Integer nombresDeJours, String etatDeReservation) {
+			Date dateDeSortie, String heureDeSortie, Integer nombresDeJours, String heureDeRentrer,
+			 String etatDeReservation) {
 		super();
 		this.prix = prix;
 		this.dateDeReservation = dateDeReservation;

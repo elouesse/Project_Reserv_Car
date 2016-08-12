@@ -44,7 +44,7 @@
 		</p:column>
 	</p:dataTable>
  <p:dialog header="Information facture" widgetVar="facInfo" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="facD" style="text-align:center;">
+        <p:outputPanel id="facD" style="display:block; margin:auto;">
             <p:panelGrid  columns="2" rendered="#{not empty ListFactureBean.facture}" columnClasses="label,value">
              
                 <h:outputText value="Date:" />

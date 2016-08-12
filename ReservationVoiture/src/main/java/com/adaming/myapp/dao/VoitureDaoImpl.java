@@ -69,22 +69,16 @@ public class VoitureDaoImpl implements IVoitureDao {
 	public List<Voiture> getVoituresDisp() throws ExceptionDispoVoiture {
 		Query req = em.createQuery("from Voiture");
 		List<Voiture> tabV = req.getResultList();
-		req = em.createQuery("from Reservation");
-		List<Reservation> tabR = req.getResultList();
 		List<Voiture> tab = new ArrayList<Voiture>();
 		for(Voiture v:tabV)
 		{
-			for(Reservation r:tabR)
+			if(v.getReserv().isEmpty())
 			{
-				if(r.getVoiture()!=v)
-				{
-					if(!tab.contains(v))
-						tab.add(v);
-				}
+				tab.add(v);
 			}
 		}
 		log.info("La liste de voitures disponibles contient "+tab.size());
-		if(req.getResultList().isEmpty())
+		if(tab.isEmpty())
 			throw new ExceptionDispoVoiture("");
 		return tab;
 	}
@@ -93,26 +87,42 @@ public class VoitureDaoImpl implements IVoitureDao {
 	@Override
 	public List<Voiture> getVoituresDispByPeriod(Date d1, Date d2) throws ExceptionDispoVoiture {
 		
-		Query query= em.createQuery("select Distinct voiture from Reservation r where r.dateDeSortie>:d2 "
-				+ "OR r.dateDeRentrer<:d1");
-	
-		query.setParameter("d1", d1);
-		query.setParameter("d2", d2);
+		Query query= em.createQuery("select Distinct voiture from Reservation");
+		List<Voiture>  list2 = query.getResultList();
 		List<Voiture>  list = query.getResultList();
+
 		List<Voiture>  tabV = getVoituresDisp();
-		log.info("La liste de voitures disponibles contient "+tabV.size());
-		for(Voiture v:tabV)
+		log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste list contient : " +list.size());
+		log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste tabV contient : " +tabV.size());
+
+		for(Voiture v: list)
 		{
-			if(!list.contains(v))
-				list.add(v);
+			log.info("!!!!!!!!!!!!!!!!!! la voiture v : "+ v.getIdvoiture()+" contient "+v.getReserv().size());
+			for (Reservation r : v.getReserv()){
+				log.info(r.getDateDeRentrer());
+				log.info(r.getDateDeSortie());
+			
+				 if((r.getDateDeSortie().getTime()>=d1.getTime() && r.getDateDeSortie().getTime()<=d2.getTime()) || (r.getDateDeRentrer().getTime()<=d2.getTime() && r.getDateDeRentrer().getTime()>=d1.getTime()))
+				 {
+					list2.remove(v);
+					log.info("!!!!!!!!!!!!!!!!!!! on passe dans le second if");
+					break;
+				}
+			}
+			log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste list contient : " +list.size());
+			continue;
 		}
-		
-		if(list.isEmpty())
+		log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste list2 apres la boucle contient : " +list2.size());
+		for(Voiture v : list2)
+		{
+			tabV.add(v);
+		}
+		if(tabV.isEmpty())
 		{
 			throw new ExceptionDispoVoiture("il n'y a aucune voiture disponible");
 		}
-		log.info("La liste de voitures disponibles contient "+list.size());
-		return list;
+		log.info("La liste de voitures disponibles contient "+tabV.size());
+		return tabV;
 	}
 
 	@SuppressWarnings("unchecked")

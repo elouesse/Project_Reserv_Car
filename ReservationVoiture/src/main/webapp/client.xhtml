@@ -8,14 +8,19 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<title>Client</title>
+	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
 
+<div class="test"><p>Bonjouuuuuuuuuuuuuur</p></div>
 
 
 	<h:form>
 		<p:dataTable var="client" value="#{ClientB.clients}" paginator="true"
-			rows="13" styleClass="paginated">
+			rows="8" styleClass="paginated">
+			<f:facet name="header">
+            Liste des clients
+        </f:facet>
 			<p:column headerText="Id">
 				<h:outputText value="#{client.idClient}" />
 			</p:column>
@@ -34,18 +39,148 @@
 
 			<p:growl id="messages" />
 			<p:column headerText="Button">
-				<p:commandButton type="button" title="Save" icon="ui-icon-wrench" />
-				<p:commandButton actionListener="#{buttonView.buttonAction}"
-					icon="ui-icon-trash" />
-				<p:commandButton type="button" title="Print" icon="ui-icon-search" />
-				<p:commandButton value="Facture" type="button" title="Print" icon="ui-icon-search" />
+				<p:commandButton type="button" title="Modifier" icon="ui-icon-wrench" />
+				
 			</p:column>
-
 		</p:dataTable>
+	</h:form>
+	<p:fieldset>
+	
+	
+	
+	
+	 <h:form>
 
+	<!--  <ui:repeat value="#{ClientB.clients}" var="c">
+	 #{c.idClient}
+	</ui:repeat> -->
+	
+
+	
+	<div style="float: left">
+	<p:selectOneMenu  value="#{ClientB.idClient}" >
+		<f:selectItems value="#{ClientB.clients}" var="c"
+		itemLabel="#{c.idClient}" itemValue="#{c.idClient}"
+		/>
+	</p:selectOneMenu> 
+	<p:commandButton update="display" action="#{ClientB.getClie}" value="Chercher"></p:commandButton>
+	<h:panelGrid id="display">
+	<h:outputText  value="#{ClientB.cli.idClient}"/>
+	<h:outputText  value="#{ClientB.cli.nom}"/>
+	<h:outputText value="#{ClientB.cli.prenom}"/>
+	<h:outputText value="#{ClientB.cli.dateDeNaissance}"/>
+	<h:outputText  value="#{ClientB.cli.numeroTel}"/>
+	<h:outputText value="#{ClientB.cli.numeroPermis}"/>
+	<h:outputText  value="#{ClientB.cli.adressPostal}"/>
+	<h:outputText value="#{ClientB.cli.mail}"/>
+	<h:outputText  value="#{ClientB.cli.pays}"/>
+	<h:outputText value="#{ClientB.cli.dateDeDelivrance}"/>
+	<h:outputText value="#{ClientB.cli.lieuDeNaissance}"/>
+	<h:outputText  value="#{ClientB.cli.delivrerPar}"/>
+	</h:panelGrid>
+	</div>
+
+	</h:form> 
+	
+	<h:form >
+
+	<div style="float: right">
+				
+	
+		<h:panelGrid id="displayU">
+			
+		
+				<tr>
+				<td><h:outputText value="Identifiant"/></td>
+					<td><p:selectOneMenu  value="#{ClientB.idClientU}">
+						<f:selectItems value="#{ClientB.clients}" var="c"
+							itemLabel="#{c.idClient}" itemValue="#{c.idClient}" />
+					</p:selectOneMenu></td>
+					
+				</tr>
+				
+				
+				<tr>
+					<td><h:outputText value="Nom" /></td>
+					<td><p:inputText id="nom" requiredMessage="Indiquez nom!"
+							required="true" value="#{ClientB.nomU}" /></td>
+				</tr>
+				
+				<tr>
+					<td><h:outputText value="Prénom" /></td>
+					<td><p:inputText id="prenom"
+							requiredMessage="Indiquez prénom!" required="true"
+							value="#{ClientB.prenomU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Date de naissance" /></td>
+					<td>
+						<!-- <h:inputText id="dateDeNaissance"
+						requiredMessage="Dateeeeeeeeee" required="true"
+						value="#{ClientB.dateDeNaissance}"> --> <!-- <f:convertDateTime pattern="yyyy/MM/dd" /> -->
+						<p:calendar id="dateDeNaissance" locale="fr" required="true"
+							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
+							value="#{ClientB.dateDeNaissanceU}">
+						</p:calendar>
+					</td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Tél" /></td>
+					<td><p:inputText id="tel" requiredMessage="Indiquez numéro!"
+							required="true"  value="#{ClientB.numeroTelU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="N°permis" /></td>
+					<td><p:inputText id="numpermis" requiredMessage="Indiquez n°!"
+							required="true" value="#{ClientB.numeroPermisU}" /></td>
+
+				</tr>
+				<tr>
+					<td><h:outputText value="Adresse" /></td>
+					<td><p:inputText id="adr" requiredMessage="Indiquez adresse!"
+							required="true" value="#{ClientB.adressPostalU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Mail" /></td>
+					<td><p:inputText id="mail" requiredMessage="Indiquez mail!"
+							required="true" value="#{ClientB.mailU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Pays" /></td>
+					<td><p:inputText id="pays" requiredMessage="Indiquez pays!"
+							required="true" value="#{ClientB.paysU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Date de délivrance" /></td>
+					<td><p:calendar id="dateD" locale="fr" required="true"
+							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
+							value="#{ClientB.dateDeDelivranceU}">
+						</p:calendar></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Lieu de naissance" /></td>
+					<td><p:inputText id="lieu" requiredMessage="Indiquez lieu!"
+							required="true" value="#{ClientB.lieuDeNaissanceU}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Délivré par" /></td>
+					<td><p:inputText id="del" requiredMessage="Remplir champ!"
+							required="true" value="#{ClientB.delivrerParU}" /></td>
+			</tr>
+	
+			</h:panelGrid>
+			
+			
+			
+			<p:commandButton update="displayU" action="#{ClientB.getClieU}" value="Chercher"/>
+			
+			
+			
+			<p:commandButton value="Modifier" action="#{ClientB.update}"/>
+		</div>	
 
 	</h:form>
-
+	</p:fieldset>
 
 </h:body>
 </html>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Ajouter une Reservation</title>
+</h:head>
+<h:body>
+
+	<!-- 	Choisir un Client -->
+	<h:form>
+		<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+			<f:facet name="header">
+            Choisir un client
+       		 </f:facet>
+			<p:selectOneMenu id="customer" value="#{addReservation.idClient}"
+				style="width:100%" requiredMessage="Choisir une Client"
+				required="true">
+				<f:selectItem itemLabel="Choisir un client" itemValue="" />
+				<f:selectItems var="client" value="#{addReservation.tabC}"
+					itemLabel="#{client.nom}" itemValue="#{client.idClient}" />
+			</p:selectOneMenu>
+			<p:message for="customer" />
+		</h:panelGrid>
+		<p:commandButton value="Submit"
+			actionListener="#{addReservation.getClient}" icon="ui-icon-check" />
+	</h:form>
+
+	<!-- Chercher un Periode de dispo -->
+	<h:form>
+		<p:messages autoUpdate="true" />
+		<h:panelGrid columns="2" cellpadding="5">
+			<f:facet name="header">
+            Choisir des periode de location
+       		 </f:facet>
+			<p:outputLabel for="multi1" value="Date De Sortie:" />
+			<p:calendar id="multi1" value="#{addReservation.dateDeSortie}"
+				pattern="MM/dd/yyyy HH:mm" pages="2"
+				requiredMessage="Choisir une Date" required="true" />
+
+			<p:outputLabel for="multi2" value="Date De Retour:" />
+			<p:calendar id="multi2" value="#{addReservation.dateDeRentrer}"
+				pattern="MM/dd/yyyy HH:mm" pages="2"
+				requiredMessage="Choisir une Date" required="true" />
+
+			<p:commandButton value="Submit"
+				actionListener="#{addReservation.reservPeriod}" icon="ui-icon-check"
+				ajax="false" />
+
+		</h:panelGrid>
+
+
+	</h:form>
+
+	<!-- 	Liste des voitures dispo -->
+	<h:form id="form">
+		<p:dataTable var="vtr" value="#{addReservation.tabV}" paginator="true"
+			rows="10" styleClass="paginated">
+			<f:facet name="header">
+            Liste Des Voitures Disponibles
+        </f:facet>
+			<p:column headerText="Id voiture">
+				<h:outputText value="#{vtr.idvoiture}" />
+			</p:column>
+			<p:column headerText="Type de Voiture" priority="5">
+				<h:outputText value="#{vtr.typeVoiture}" />
+			</p:column>
+			<p:column headerText="Modele" priority="3">
+				<h:outputText value="#{vtr.model}" />
+			</p:column>
+			<p:column headerText="Kilometrage" priority="4">
+				<h:outputText value="#{vtr.kilometrage}" />
+			</p:column>
+			<p:column headerText="Prix Par Jour" priority="2">
+				<h:outputText value="#{vtr.prix}" />
+			</p:column>
+
+			<p:column headerText="Actions" style="width:50px;text-align: center"
+				priority="2">
+
+				<p:commandButton update=":form:carDetail"
+					oncomplete="PF('carDialog').show()" icon="ui-icon-search"
+					title="Voir">
+					<f:setPropertyActionListener value="#{vtr}"
+						target="#{addReservation.selectedCar}" />
+				</p:commandButton>
+
+				<p:commandButton update=":form:rental"
+					oncomplete="PF('rentalDialog').show()" icon="ui-icon-euro"
+					title="Reserver">
+					<f:setPropertyActionListener value="#{vtr}"
+						target="#{addReservation.rentedCar}" />
+				</p:commandButton>
+
+			</p:column>
+		</p:dataTable>
+
+
+		<!-- 		Voir info Voiture -->
+		<p:dialog header="Info Voiture" widgetVar="carDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="carDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty addReservation.selectedCar}"
+					columnClasses="label,value">
+
+					<p:outputLabel for="seeId" value="Id:" />
+					<p:outputLabel id="seeId"
+						value="#{addReservation.selectedCar.idvoiture}" />
+
+					<p:outputLabel for="seeMod" value="Model:" />
+					<p:outputLabel id="seeMod"
+						value="#{addReservation.selectedCar.model}" />
+
+					<p:outputLabel for="seeTag" value="Immatricule:" />
+					<p:outputLabel id="seeTag"
+						value="#{addReservation.selectedCar.immatricule}" />
+
+					<p:outputLabel for="seeMil" value="Kilometrage:" />
+					<p:outputLabel id="seeMil"
+						value="#{addReservation.selectedCar.kilometrage}" />
+
+					<p:outputLabel for="seePri" value="Prix Par Jour:" />
+					<p:outputLabel id="seePri"
+						value="#{addReservation.selectedCar.prix}" />
+
+					<p:outputLabel for="seeTyp" value="Type de Voiture:" />
+					<p:outputLabel id="seeTyp"
+						value="#{addReservation.selectedCar.typeVoiture}" />
+
+					<p:outputLabel for="seeFue" value="Type de Carburant:" />
+					<p:outputLabel id="seeFue"
+						value="#{addReservation.selectedCar.typeCarburant}" />
+
+					<p:outputLabel for="seeSta" value="Etat:" />
+					<p:outputLabel id="seeSta"
+						value="#{addReservation.selectedCar.etatVoiture}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Votre Reservation" widgetVar="rentalDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="rental" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty addReservation.rentedCar}"
+					columnClasses="label,value">
+
+					<p:outputLabel value="ID Voiture:" />
+					<p:outputLabel value="#{addReservation.rentedCar.idvoiture}" />
+
+					<p:outputLabel value="Model de Voiture:" />
+					<p:outputLabel value="#{addReservation.rentedCar.model}" />
+
+					<p:outputLabel value="Nom Client" />
+					<p:outputLabel value="#{addReservation.customer.nom}" />
+
+					<p:outputLabel value="Prenom Client" />
+					<p:outputLabel value="#{addReservation.customer.prenom}" />
+
+					<p:outputLabel value="Date De Reservation" />
+					<p:outputLabel value="#{addReservation.dateDeReservation}" />
+
+					<p:outputLabel value="Date De Sortie" />
+					<p:outputLabel value="#{addReservation.dateDeSortie}" />
+
+					<p:outputLabel value="Date De Retour:" />
+					<p:outputLabel value="#{addReservation.dateDeRentrer}" />
+
+					<p:outputLabel value="Prix de la reservation" />
+					<p:outputLabel
+						value="#{addReservation.rentedCar.prix*addReservation.nombresDeJours}" />
+
+					<p:outputLabel value="Heure de Sortie" />
+					<p:outputLabel value="#{addReservation.heureDeSortie}h" />
+
+					<p:outputLabel value="Heure de Retour" />
+					<h:outputText value="#{addReservation.heureDeRentrer}h" />
+
+					<p:outputLabel value="Etat de la Reservation" />
+					<p:outputLabel value="#{addReservation.etatDeReservation}" />
+
+					<p:outputLabel value="Nombre de Jours" />
+					<p:outputLabel value="#{addReservation.nombresDeJours}" />
+
+				</p:panelGrid>
+
+				<p:commandButton value="Submit" update=":form:saveReserv"
+					actionListener="#{addReservation.addReserv}" icon="ui-icon-check"
+					title="Reserver" oncomplete="PF('successDialog').show()" />
+
+			</p:outputPanel>
+		</p:dialog>
+
+
+		<!-- 		Success Reservation enregistre -->
+		<p:dialog header="Succes" widgetVar="successDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="saveReserv" style="text-align:center;">
+				<p:panelGrid columns="1" columnClasses="label,value">
+					<p:outputLabel value="La reservation a bien ete enregistre" />
+					<p:outputLabel>
+						<p:link outcome="index" value="OK" />
+					</p:outputLabel>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+		
+	</h:form>
+
+
+</h:body>
+</html>
