@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui">
+
+	<b:navBar brand="Gcar" brandHref="#" inverse="true" position="left"
+		sticky="true">
+		<b:navbarLinks>
+			<b:navLink iconAwesome="home" value="Accueil" href="index.xhtml"></b:navLink>
+			<b:navLink iconAwesome="bank" value="Factures" href="facture.xhtml"></b:navLink>
+			<b:dropMenu value="Clientèle" iconAwesome="user" iconAlign="right">
+				<b:navLink value="Clients" href="client.xhtml"></b:navLink>
+				<b:dropMenu value="Actions">
+					<b:navLink value="Ajouter un client" href="addClient.xhtml"></b:navLink>
+				</b:dropMenu>
+			</b:dropMenu>
+			<b:dropMenu value="Réservations" iconAwesome="calendar"
+				iconAlign="right">
+				<b:navLink value="Liste des réservations"
+					href="getReservations.xhtml"></b:navLink>
+				<b:dropMenu value="Actions">
+					<b:navLink value="Ajouter une réservation"
+						href="addReservation.xhtml"></b:navLink>
+				</b:dropMenu>
+			</b:dropMenu>
+			<b:dropMenu value="Parc automobile" iconAwesome="car"
+				iconAlign="right">
+				<b:navLink value="Liste des voitures" href="listeVoiture.xhtml"></b:navLink>
+				<b:dropMenu value="Actions">
+					<b:navLink value="Ajouter une voiture" href="addVoiture.xhtml"></b:navLink>
+				</b:dropMenu>
+			</b:dropMenu>
+			<b:dropMenu value="Entretiens" iconAwesome="wrench" iconAlign="right">
+				<b:navLink value="Entretiens" href="entretien.xhtml"></b:navLink>
+				<b:dropMenu value="Actions">
+					<b:navLink value="Ajouter un entretien" href="addEntretien.xhtml"></b:navLink>
+				</b:dropMenu>
+			</b:dropMenu>
+		</b:navbarLinks>
+	</b:navBar>
+</ui:composition>
+</html>

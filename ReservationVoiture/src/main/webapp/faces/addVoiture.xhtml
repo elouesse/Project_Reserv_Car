@@ -1,43 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-
 	xmlns:f="http://java.sun.com/jsf/core"
-
 	xmlns:h="http://java.sun.com/jsf/html"
-
-	xmlns:p="http://primefaces.org/ui">
-
-
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Ajouter une voiture</title>
-
 </h:head>
 
 
 
 <h:body>
-
-
-
+	<ui:include src="nav-bar.xhtml" />
+	
+	<b:container layout="fluid">
+	
 	<!-- FORMULAIRE AJOUTER -->
-
-	<h:form>
-
-
+	<h:form id="addVoitureForm">
 
 		<!-- DEBUT PANNEAU -->
 
 		<p:fieldset>
 
 			<p:panelGrid id="panelGrid" columns="3" cellpadding="5" layout="grid"
-
 				styleClass="ui-panelgrid-blank">
 
 				<f:facet name="header">
@@ -48,13 +36,12 @@
 
 				<p:outputLabel for="carburant" value="Carburant : " />
 
-				<p:selectOneMenu id="carburant" value="#{AddVoitureBean.carburant}"
-
+				<p:selectOneMenu id="carburant" value="#{VoitureBean.carburant}"
 					style="width:125px">
 
 					<f:selectItem itemLabel="Selectionner" itemValue="" />
 
-					<f:selectItems value="#{AddVoitureBean.carburants}" />
+					<f:selectItems value="#{VoitureBean.carburants}" />
 
 					<p:ajax event="blur" update="carburantValue" />
 
@@ -66,13 +53,12 @@
 
 				<p:outputLabel for="modele" value="Modele : " />
 
-				<p:selectOneMenu id="modele" value="#{AddVoitureBean.modele}"
-
+				<p:selectOneMenu id="modele" value="#{VoitureBean.modele}"
 					style="width:125px">
 
 					<f:selectItem itemLabel="Selectionner" itemValue="" />
 
-					<f:selectItems value="#{AddVoitureBean.modeles}" />
+					<f:selectItems value="#{VoitureBean.modeles}" />
 
 					<p:ajax event="blur" update="modeleValue" />
 
@@ -84,13 +70,12 @@
 
 				<p:outputLabel for="etat" value="Etat du vehicule : " />
 
-				<p:selectOneMenu id="etat" value="#{AddVoitureBean.etat}"
-
+				<p:selectOneMenu id="etat" value="#{VoitureBean.etat}"
 					style="width:125px">
 
 					<f:selectItem itemLabel="Selectionner" itemValue="" />
 
-					<f:selectItems value="#{AddVoitureBean.etats}" />
+					<f:selectItems value="#{VoitureBean.etats}" />
 
 					<p:ajax event="blur" update="etatValue" />
 
@@ -102,13 +87,12 @@
 
 				<p:outputLabel for="type" value="Type : " />
 
-				<p:selectOneMenu id="type" value="#{AddVoitureBean.type}"
-
+				<p:selectOneMenu id="type" value="#{VoitureBean.type}"
 					style="width:125px">
 
 					<f:selectItem itemLabel="Selectionner" itemValue="" />
 
-					<f:selectItems value="#{AddVoitureBean.types}" />
+					<f:selectItems value="#{VoitureBean.types}" />
 
 					<p:ajax event="blur" update="typeValue" />
 
@@ -121,9 +105,7 @@
 				<p:outputLabel for="immatriculation" value="Immatriculation :" />
 
 				<p:inputMask id="immatriculation"
-
-					value="#{AddVoitureBean.immatriculation}" mask="aa-999-aa"
-
+					value="#{VoitureBean.immatriculation}" mask="aa-999-aa"
 					requiredMessage="Immatriculation obligatoire" required="true">
 
 					<p:ajax event="blur" update="immatriculationValue" />
@@ -137,9 +119,7 @@
 				<p:outputLabel for="kilometrage" value="Kilometrage :" />
 
 				<p:inputNumber id="kilometrage"
-
-					value="#{AddVoitureBean.kilometrage}"
-
+					value="#{VoitureBean.kilometrage}"
 					requiredMessage="kilometrage obligatoire" required="true">
 
 					<p:ajax event="blur" update="kilometrageValue" />
@@ -152,8 +132,7 @@
 
 				<p:outputLabel for="prix" value="Prix d'achat :" />
 
-				<p:inputNumber id="prix" value="#{AddVoitureBean.prix}"
-
+				<p:inputNumber id="prix" value="#{VoitureBean.prix}"
 					requiredMessage="Prix obligatoire" required="true">
 
 					<p:ajax event="blur" update="prixValue" />
@@ -165,23 +144,19 @@
 
 
 				<p:commandButton type="reset" id="revenir" value="Revenir"
-
-					action="listeVoiture?faces-redirect=true" icon="ui-icon-arrowreturnthick-1-w">
+					action="listeVoiture?faces-redirect=true"
+					icon="ui-icon-arrowreturnthick-1-w">
 
 					<f:param />
 
 				</p:commandButton>
 
 				<p:commandButton value="Sauvegarder"
-
-					action="#{AddVoitureBean.addVoiture}" update="save"
-
-					actionListener="#{AddVoitureBean.confirmationAdd}"
-
+					action="#{VoitureBean.addVoiture}" update="save"
+					actionListener="#{VoitureBean.confirmationAdd}"
 					icon="ui-icon-check" onsuccess="PF('dlg').show()">
 
 					<p:confirm header="Confirmation" message="Etes-vous sur?"
-
 						icon="ui-icon-alert" update="display" />
 
 				</p:commandButton>
@@ -199,7 +174,6 @@
 
 
 		<p:messages id="messages" showDetail="false" autoUpdate="true"
-
 			closable="true" />
 
 		<p:growl id="save" showDetail="true" life="2000" />
@@ -209,13 +183,10 @@
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 
 			<p:commandButton value="Oui" type="button"
-
 				styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
-
-				update=":form:carDetail" />
+				update=":addVoitureForm:carDetail" />
 
 			<p:commandButton value="Annuler" type="button"
-
 				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 
 		</p:confirmDialog>
@@ -223,7 +194,6 @@
 
 
 		<p:dialog header="Recapitulatif" widgetVar="dlg" modal="true"
-
 			resizable="false" showEffect="fade">
 
 			<p:outputPanel id="carDetail" style="text-align:center;">
@@ -233,48 +203,45 @@
 					<h:outputText value="Carburant :" />
 
 					<h:outputText id="carburantValue"
-
-						value="#{AddVoitureBean.carburant}" />
+						value="#{VoitureBean.carburant}" />
 
 
 
 					<h:outputText value="Modele :" />
 
-					<h:outputText id="modeleValue" value="#{AddVoitureBean.modele}" />
+					<h:outputText id="modeleValue" value="#{VoitureBean.modele}" />
 
 
 
 					<h:outputText value="Etat :" />
 
-					<h:outputText id="etatValue" value="#{AddVoitureBean.etat}" />
+					<h:outputText id="etatValue" value="#{VoitureBean.etat}" />
 
 
 
 					<h:outputText value="Type :" />
 
-					<h:outputText id="typeValue" value="#{AddVoitureBean.type}" />
+					<h:outputText id="typeValue" value="#{VoitureBean.type}" />
 
 
 
 					<h:outputText value="Immatriculation" />
 
 					<h:outputText id="immatriculationValue"
-
-						value="#{AddVoitureBean.immatriculation}" />
+						value="#{VoitureBean.immatriculation}" />
 
 
 
 					<h:outputText value="Kilometrage :" />
 
 					<h:outputText id="kilometrageValue"
-
-						value="#{AddVoitureBean.kilometrage}" />
+						value="#{VoitureBean.kilometrage}" />
 
 
 
 					<h:outputText value="Prix :" />
 
-					<h:outputText id="prixValue" value="#{AddVoitureBean.prix}" />
+					<h:outputText id="prixValue" value="#{VoitureBean.prix}" />
 
 				</p:panelGrid>
 
@@ -289,11 +256,8 @@
 	<!-- FIN FORMULAIRE AJOUTER -->
 
 
-
+</b:container>
 
 
 </h:body>
-
-
-
 </html>

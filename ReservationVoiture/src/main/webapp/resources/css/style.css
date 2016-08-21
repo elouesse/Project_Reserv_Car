@@ -1,4 +1,15 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
 .test {
 	color:aqua;
+}
+
+.outputPanelStyle {
+	display:block; 
+	margin:auto;
+	text-align:left;
+}
+
+.outputLabel {
+	color:red;
+	font-weight: bold;
 }
