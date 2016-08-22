@@ -80,7 +80,6 @@ public class VoitureBean {
 
 	@PostConstruct
 	public void init() {
-		voituresFilter = serviceVoiture.getVoitures();
 		refreshListe();
 
 		carburants = new HashMap<String, String>();
@@ -114,6 +113,7 @@ public class VoitureBean {
 	}
 
 	public void refreshListe() {
+		voituresFilter = serviceVoiture.getVoitures();
 		voitures = serviceVoiture.getVoitures();
 
 	}
@@ -143,8 +143,11 @@ public class VoitureBean {
 	}
 
 	public String goToUpdateVoiture() {
-//		System.out.println("Vers la mise a jour");
-		return "updateVoiture";
+		return "updateVoiture?redirect=true";
+	}
+	
+	public String goToCompteur() {
+		return "updateCompteur?redirect=true";
 	}
 
 	public void addEntretient(Long idV) {
@@ -161,6 +164,21 @@ public class VoitureBean {
 		setVoiture(serviceVoiture.addVoiture(vtr));
 		setIdVoiture(voiture.getIdvoiture());
 		addEntretient(idVoiture);
+		refreshListe();
+	}
+	
+	public void updateVoiture () {
+		System.out.println("Id : "+voitureSelect.getIdvoiture());
+		System.out.println("carburant : "+carburant);
+		if (carburant != null) { voitureSelect.setTypeCarburant(carburant); }
+		if (modele != null)	{ voitureSelect.setModel(modele);	}
+		if (etat != null){ voitureSelect.setEtatVoiture(etat); }
+		if (type != null) { voitureSelect.setTypeVoiture(type); }
+		if (immatriculation != null) { voitureSelect.setImmatricule(immatriculation);	}
+		if (kilometrage != 0.) { voitureSelect.setKilometrage(kilometrage); }
+		if (prix != 0.) { voitureSelect.setPrix(prix); }
+		
+		serviceVoiture.updateVoiture(voitureSelect);
 		refreshListe();
 	}
 	

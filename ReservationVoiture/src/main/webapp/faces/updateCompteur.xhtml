@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Compteur</title>
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="nav-bar.xhtml" />
+	<b:container layout="fluid" >
+		<h:form id="updateCompteurForm">
+			<b:panelGrid colSpans="3,9" size="xs" col-lg="12">
+				<h:outputLabel value="id :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.idvoiture}"
+					disabled="true" />
+				<h:outputLabel value="Modele :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.model}"
+					disabled="true" />
+				<h:outputLabel value="Immatriculation :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.immatricule}"
+					disabled="true" />
+				<h:outputLabel value="Prix :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.prix}"
+					disabled="true" />
+				<h:outputLabel value="Type :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.typeVoiture}"
+					disabled="true" />
+				<h:outputLabel value="Carburant :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.typeCarburant}"
+					disabled="true" />
+				<h:outputLabel value="Etat :" />
+				<b:inputText value="#{VoitureBean.voitureSelect.etatVoiture}"
+					disabled="true" />
+			</b:panelGrid>
+			<b:panel title="Mis a jour du compteur" look="primary" col-lg="12">
+				<b:row>
+					<b:column>
+						<h:outputText value="Kilométrage actuel: " />
+					</b:column>
+					<b:column>
+						<b:inputText
+							placeholder="#{VoitureBean.voitureSelect.kilometrage}"
+							value="#{VoitureBean.voitureSelect.kilometrage}" disabled="true">
+							<f:facet name="append">
+								<h:outputText value=" km" />
+							</f:facet>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<h:outputText value="Nouveau kilométrage: " />
+					</b:column>
+					<b:column>
+						<b:inputText value="#{VoitureBean.kilometrage}">
+							<f:facet name="append">
+								<h:outputText value=" km" />
+							</f:facet>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="10">
+					</b:column>
+					<b:column span="2">
+						<b:commandButton value="With Icon" ajax="true" update="updateCompteurForm" icon="plus-sign"
+          look="success"/>
+					</b:column>
+				
+				</b:row>
+			</b:panel>
+			
+		</h:form>
+	</b:container>
+</h:body>
+</html>

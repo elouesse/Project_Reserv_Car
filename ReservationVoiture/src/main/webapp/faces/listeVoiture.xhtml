@@ -28,7 +28,7 @@
 					<f:facet name="header">
 						<p:outputPanel>
 							<p:outputLabel value="Chercher parmis tout les filtres :" />
-							<p:inputText id="globalFilterVoiture"
+							<p:inputText id="globalFilter"
 								onkeyup="PF('tableListeVoiture').filter()" style="width:150px"
 								placeholder="Saisir un mot-clé" />
 						</p:outputPanel>
@@ -133,9 +133,9 @@
 							</p:outputPanel>
 						</p:dialog>
 
-						<p:commandButton icon="ui-icon-pencil" id="kilometrage">
+						<p:commandButton icon="ui-icon-pencil" id="kilometrage" action="#{VoitureBean.goToCompteur}">
 							<f:setPropertyActionListener value="#{vtr}"
-								target="#{VoitureBean.voiture}" />
+								target="#{VoitureBean.voitureSelect}" />
 						</p:commandButton>
 						<p:tooltip id="toolTipKilometrage" for="kilometrage"
 							value="Modifier le kilometrage de la voiture" position="top" />

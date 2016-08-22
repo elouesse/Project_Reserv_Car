@@ -54,7 +54,7 @@
 				<p:outputLabel for="modele" value="Modele : " />
 
 				<p:selectOneMenu id="modele" value="#{VoitureBean.modele}"
-					style="width:125px">
+					style="width:125px" >
 
 					<f:selectItem itemLabel="Selectionner" itemValue="" />
 
@@ -154,7 +154,7 @@
 				<p:commandButton value="Sauvegarder"
 					action="#{VoitureBean.addVoiture}" update="save"
 					actionListener="#{VoitureBean.confirmationAdd}"
-					icon="ui-icon-check" onsuccess="PF('dlg').show()">
+					icon="ui-icon-check" onsuccess="PF('dlg').show()" type="submit">
 
 					<p:confirm header="Confirmation" message="Etes-vous sur?"
 						icon="ui-icon-alert" update="display" />
