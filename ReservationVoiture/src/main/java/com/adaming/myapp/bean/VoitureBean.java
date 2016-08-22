@@ -47,11 +47,13 @@ public class VoitureBean {
 	private List<Voiture> voitures = new ArrayList<Voiture>();
 	private Voiture voiture;
 	private List<Entretien> entretiens = new ArrayList<Entretien>();
+	private Long idEntretien;
 	private Entretien entretien;
 	private String model;
 	private String immatricule;
 	private Double kilometrage;
 	private double prix;
+	private double preference;
 	private String typeVoiture;
 	private String typeCarburant;
 	private String etatVoiture;
@@ -115,7 +117,10 @@ public class VoitureBean {
 	public void refreshListe() {
 		voituresFilter = serviceVoiture.getVoitures();
 		voitures = serviceVoiture.getVoitures();
+	}
 
+	public String redirectListeVoiture() {
+		return "listeVoiture?faces-redirect=true";
 	}
 
 	public void getEntretien() {
@@ -143,11 +148,11 @@ public class VoitureBean {
 	}
 
 	public String goToUpdateVoiture() {
-		return "updateVoiture?redirect=true";
+		return "updateVoiture?faces-redirect=true";
 	}
-	
+
 	public String goToCompteur() {
-		return "updateCompteur?redirect=true";
+		return "updateCompteur?faces-redirect=true";
 	}
 
 	public void addEntretient(Long idV) {
@@ -160,28 +165,77 @@ public class VoitureBean {
 	}
 
 	public void addVoiture() {
-		Voiture vtr = new Voiture(modele, immatriculation, kilometrage, prix, type, carburant, etat);
-		setVoiture(serviceVoiture.addVoiture(vtr));
+		voiture = new Voiture(modele, immatriculation, kilometrage, prix, type, carburant, etat);
+		setVoiture(serviceVoiture.addVoiture(voiture));
 		setIdVoiture(voiture.getIdvoiture());
 		addEntretient(idVoiture);
 		refreshListe();
+		voiture = null;
 	}
-	
-	public void updateVoiture () {
-		System.out.println("Id : "+voitureSelect.getIdvoiture());
-		System.out.println("carburant : "+carburant);
-		if (carburant != null) { voitureSelect.setTypeCarburant(carburant); }
-		if (modele != null)	{ voitureSelect.setModel(modele);	}
-		if (etat != null){ voitureSelect.setEtatVoiture(etat); }
-		if (type != null) { voitureSelect.setTypeVoiture(type); }
-		if (immatriculation != null) { voitureSelect.setImmatricule(immatriculation);	}
-		if (kilometrage != 0.) { voitureSelect.setKilometrage(kilometrage); }
-		if (prix != 0.) { voitureSelect.setPrix(prix); }
-		
+
+	public void updateVoiture() {
+		if (carburant != null) {
+			voitureSelect.setTypeCarburant(carburant);
+		}
+		if (modele != null) {
+			voitureSelect.setModel(modele);
+		}
+		if (etat != null) {
+			voitureSelect.setEtatVoiture(etat);
+		}
+		if (type != null) {
+			voitureSelect.setTypeVoiture(type);
+		}
+		if (!immatriculation.isEmpty()) {
+			voitureSelect.setImmatricule(immatriculation);
+		}
+		if (kilometrage != 0.) {
+			voitureSelect.setKilometrage(kilometrage);
+		}
+		if (prix != 0.) {
+			voitureSelect.setPrix(prix);
+		}
+
 		serviceVoiture.updateVoiture(voitureSelect);
 		refreshListe();
+		remiseAZero();
 	}
-	
+
+	public void updateCompteur() {
+		voitureSelect.setKilometrage(kilometrage);
+		serviceVoiture.updateVoiture(voitureSelect);
+		entretiens = serviceEntretien.getEntretiensOfOneCar(idVoiture);
+		Iterator<Entretien> tabE = entretiens.iterator();
+		Boolean cok = false;
+		System.out.println("ffs");
+		while (tabE.hasNext()) {
+			entretien = tabE.next();
+			System.out.println(entretien.getClass().getSimpleName());
+			switch (entretien.getClass().getSimpleName()) {
+			case "Vidange":
+				System.out.println("Vidange");
+				cok = serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 10000.);
+				if (cok = true) {
+					
+				}
+				break;
+
+			case "FiltreHuile":
+				System.out.println("FiltreHuile");
+				serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 30000.);
+				break;
+
+			case "ChaineDistribution":
+				System.out.println("ChaineDistribution");
+				serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 70000.);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+
 	public void confirmationDelete() {
 		messageDelete("Succes", "La voiture a bien été supprimee");
 	}
@@ -198,15 +252,25 @@ public class VoitureBean {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, detail);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
+
 	public void messageAdd(String summary, String detail) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
+
 	public void messageUpdate(String summary, String detail) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
 		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	public void remiseAZero() {
+		setCarburant(null);
+		setEtat(null);
+		setImmatriculation(null);
+		setKilometrage(0.);
+		setPrix(0.);
+		setType(null);
+		setModele(null);
 	}
 
 	/*
@@ -226,153 +290,115 @@ public class VoitureBean {
 	 */
 
 	public IVoitureService getServiceVoiture() {
-
 		return serviceVoiture;
-
 	}
 
 	public void setServiceVoiture(IVoitureService serviceVoiture) {
-
 		this.serviceVoiture = serviceVoiture;
-
-	}
-
-	public List<Voiture> getVoitures() {
-
-		return voitures;
-
-	}
-
-	public void setVoitures(List<Voiture> voitures) {
-
-		this.voitures = voitures;
-
-	}
-
-	public String getModel() {
-
-		return model;
-
-	}
-
-	public void setModel(String model) {
-
-		this.model = model;
-
-	}
-
-	public String getImmatricule() {
-
-		return immatricule;
-
-	}
-
-	public void setImmatricule(String immatricule) {
-
-		this.immatricule = immatricule;
-
-	}
-
-	public Double getKilometrage() {
-
-		return kilometrage;
-
-	}
-
-	public void setKilometrage(Double kilometrage) {
-
-		this.kilometrage = kilometrage;
-
-	}
-
-	public double getPrix() {
-
-		return prix;
-
-	}
-
-	public void setPrix(double prix) {
-
-		this.prix = prix;
-
-	}
-
-	public String getTypeVoiture() {
-
-		return typeVoiture;
-
-	}
-
-	public void setTypeVoiture(String typeVoiture) {
-
-		this.typeVoiture = typeVoiture;
-
-	}
-
-	public String getTypeCarburant() {
-
-		return typeCarburant;
-
-	}
-
-	public void setTypeCarburant(String typeCarburant) {
-
-		this.typeCarburant = typeCarburant;
-
-	}
-
-	public String getEtatVoiture() {
-
-		return etatVoiture;
-
-	}
-
-	public void setEtatVoiture(String etatVoiture) {
-
-		this.etatVoiture = etatVoiture;
-
-	}
-
-	public Voiture getVoiture() {
-
-		return voiture;
-
-	}
-
-	public void setVoiture(Voiture voiture) {
-
-		this.voiture = voiture;
-
 	}
 
 	public IEntretienService getServiceEntretien() {
-
 		return serviceEntretien;
-
 	}
 
 	public void setServiceEntretien(IEntretienService serviceEntretien) {
-
 		this.serviceEntretien = serviceEntretien;
+	}
 
+	public List<Voiture> getVoitures() {
+		return voitures;
+	}
+
+	public void setVoitures(List<Voiture> voitures) {
+		this.voitures = voitures;
+	}
+
+	public Voiture getVoiture() {
+		return voiture;
+	}
+
+	public void setVoiture(Voiture voiture) {
+		this.voiture = voiture;
 	}
 
 	public List<Entretien> getEntretiens() {
-
 		return entretiens;
-
 	}
 
 	public void setEntretiens(List<Entretien> entretiens) {
-
 		this.entretiens = entretiens;
-
 	}
 
-	public void setEntretien(Entretien entretien) {
+	public Long getIdEntretien() {
+		return idEntretien;
+	}
 
-		this.entretien = entretien;
+	public void setIdEntretien(Long idEntretien) {
+		this.idEntretien = idEntretien;
+	}
 
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getImmatricule() {
+		return immatricule;
+	}
+
+	public void setImmatricule(String immatricule) {
+		this.immatricule = immatricule;
+	}
+
+	public Double getKilometrage() {
+		return kilometrage;
+	}
+
+	public void setKilometrage(Double kilometrage) {
+		this.kilometrage = kilometrage;
+	}
+
+	public double getPrix() {
+		return prix;
+	}
+
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+
+	public double getPreference() {
+		return preference;
+	}
+
+	public void setPreference(double preference) {
+		this.preference = preference;
+	}
+
+	public String getTypeVoiture() {
+		return typeVoiture;
+	}
+
+	public void setTypeVoiture(String typeVoiture) {
+		this.typeVoiture = typeVoiture;
+	}
+
+	public String getTypeCarburant() {
+		return typeCarburant;
+	}
+
+	public void setTypeCarburant(String typeCarburant) {
+		this.typeCarburant = typeCarburant;
+	}
+
+	public String getEtatVoiture() {
+		return etatVoiture;
+	}
+
+	public void setEtatVoiture(String etatVoiture) {
+		this.etatVoiture = etatVoiture;
 	}
 
 	public Voiture getVoitureSelect() {
@@ -397,6 +423,22 @@ public class VoitureBean {
 
 	public void setIdVoiture(Long idVoiture) {
 		this.idVoiture = idVoiture;
+	}
+
+	public List<Voiture> getVoituresFilter() {
+		return voituresFilter;
+	}
+
+	public void setVoituresFilter(List<Voiture> voituresFilter) {
+		this.voituresFilter = voituresFilter;
+	}
+
+	public Map<String, String> getCarburants() {
+		return carburants;
+	}
+
+	public void setCarburants(Map<String, String> carburants) {
+		this.carburants = carburants;
 	}
 
 	public String getModele() {
@@ -479,20 +521,8 @@ public class VoitureBean {
 		this.immatriculation = immatriculation;
 	}
 
-	public List<Voiture> getVoituresFilter() {
-		return voituresFilter;
-	}
-
-	public void setVoituresFilter(List<Voiture> voituresFilter) {
-		this.voituresFilter = voituresFilter;
-	}
-
-	public Map<String, String> getCarburants() {
-		return carburants;
-	}
-
-	public void setCarburants(Map<String, String> carburants) {
-		this.carburants = carburants;
+	public void setEntretien(Entretien entretien) {
+		this.entretien = entretien;
 	}
 
 }

@@ -66,15 +66,17 @@
 					</b:column>
 				</b:row>
 				<b:row>
-					<b:column span="10">
+					<b:column span="10" ></b:column>
+					<b:column span="1">
+						<b:commandButton value="Confirmer" ajax="true" update="updateCompteurForm" icon="plus-sign"
+          look="success" action="#{VoitureBean.updateCompteur}"/>
 					</b:column>
-					<b:column span="2">
-						<b:commandButton value="With Icon" ajax="true" update="updateCompteurForm" icon="plus-sign"
-          look="success"/>
-					</b:column>
-				
 				</b:row>
 			</b:panel>
+			
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" />
+			<p:growl id="update" showDetail="true" life="2000" />
 			
 		</h:form>
 	</b:container>
