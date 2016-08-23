@@ -91,7 +91,11 @@ public class VoitureDaoImpl implements IVoitureDao {
 		List<Voiture>  list2 = query.getResultList();
 		List<Voiture>  list = query.getResultList();
 
-		List<Voiture>  tabV = getVoituresDisp();
+		List<Voiture>  tabV = new ArrayList<Voiture>();	
+		try {
+		 tabV = getVoituresDisp();
+		} catch (ExceptionDispoVoiture e) {
+				}
 		log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste list contient : " +list.size());
 		log.info("!!!!!!!!!!!!!!!!!!!!!!! la liste tabV contient : " +tabV.size());
 

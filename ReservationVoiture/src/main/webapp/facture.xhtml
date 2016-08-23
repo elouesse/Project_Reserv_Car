@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:b="http://bootsfaces.net/ui">
-	
+
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<title>Liste Factures</title>
@@ -15,74 +15,88 @@
 </h:head>
 <h:body>
 	<ui:include src="/navig.xhtml" />
-<h:form id="form">
-	<p:dataTable id="dataTable" var="fact" value="#{ListFactureBean.factures}"
-	emptyMessage="No cars found with given criteria" filteredValue="#{ListFactureBean.tab2}"
-		paginator="true" rows="13" styleClass="paginated" widgetVar="factureTable">
-		
-		 <f:facet name="header">
-            <p:outputPanel>
-                <h:outputText value="Search all fields:" />
-                <p:inputText id="globalFilter" onkeyup="PF('factureTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-            </p:outputPanel>
-        </f:facet>
-		<p:column headerText="Date Facture" sortBy="#{fact.dateDeFacturation}">
-			<h:outputText value="#{fact.dateDeFacturation}" />
-		</p:column>
-		<p:column headerText="Client" filterBy="#{fact.reservation.client.nom}" sortBy="#{fact.reservation.client.nom}">
-			<h:outputText value="#{fact.reservation.client.nom}" />
-		</p:column>
-		<p:column headerText="voiture reservée"  filterBy="#{fact.reservation.voiture.model}" sortBy="#{fact.reservation.voiture.model}">
-			<h:outputText value="#{fact.reservation.voiture.model}" />
-		</p:column>
-		<p:column headerText="Actions">
-				<p:commandButton  update=":form:facD" value="Plus d'information"  oncomplete="PF('facInfo').show()"
+	<h:form id="form">
+		<p:dataTable id="dataTable" var="fact"
+			value="#{ListFactureBean.factures}"
+			emptyMessage="No cars found with given criteria"
+			filteredValue="#{ListFactureBean.tab2}" paginator="true" rows="13"
+			styleClass="paginated" widgetVar="factureTable">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="PF('factureTable').filter()" style="width:150px"
+						placeholder="Enter keyword" />
+				</p:outputPanel>
+			</f:facet>
+			<p:column headerText="Date Facture"
+				sortBy="#{fact.dateDeFacturation}">
+				<h:outputText value="#{fact.dateDeFacturation}" />
+			</p:column>
+			<p:column headerText="Client"
+				filterBy="#{fact.reservation.client.nom}"
+				sortBy="#{fact.reservation.client.nom}">
+				<h:outputText value="#{fact.reservation.client.nom}" />
+			</p:column>
+			<p:column headerText="voiture reservée"
+				filterBy="#{fact.reservation.voiture.model}"
+				sortBy="#{fact.reservation.voiture.model}">
+				<h:outputText value="#{fact.reservation.voiture.model}" />
+			</p:column>
+			<p:column headerText="Actions">
+				<p:commandButton update=":form:facD" value="Plus d'information"
+					oncomplete="PF('facInfo').show()"
 					action="#{ListFactureBean.getInfoFact}">
 					<f:setPropertyActionListener value="#{fact.idFacture}"
 						target="#{ListFactureBean.idFacture}" />
-				</p:commandButton>		
-		</p:column>
-	</p:dataTable>
- <p:dialog header="Information facture" widgetVar="facInfo" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="facD" style="display:block; margin:auto;">
-            <p:panelGrid  columns="2" rendered="#{not empty ListFactureBean.facture}" columnClasses="label,value">
-             
-                <h:outputText value="Date:" />
-				<h:outputText value="#{ListFactureBean.facture.dateDeFacturation}" />
-				
-				<h:outputText value="Nom client:" />
-				<h:outputText value="#{ListFactureBean.facture.reservation.client.nom}" />
-				
-				<h:outputText value="prenom client:" />
-				<h:outputText
-					value="#{ListFactureBean.facture.reservation.client.prenom}" />
-					
-				<h:outputText value="adresse client:" />
-				<h:outputText
-					value="#{ListFactureBean.facture.reservation.client.adressPostal}" />
-					
-				<h:outputText value="Modele voiture" />
-				<h:outputText
-					value="#{ListFactureBean.facture.reservation.voiture.model}" />
-					
-				<h:outputText value="Reservation date debut" />
-				<h:outputText
-					value="#{ListFactureBean.facture.reservation.dateDeSortie}" />
-					
-				<h:outputText value="Reservation date fin" />
-				<h:outputText
-					value="#{ListFactureBean.facture.reservation.dateDeRentrer}" />
-					
-				<h:outputText value="Prix a payer" />
-				<h:outputText value="#{ListFactureBean.prix}" />		
-            </p:panelGrid>        	
-        </p:outputPanel>
-        <p:commandButton value="Print" type="button" icon="ui-icon-print"
-					style="display:block;margin-bottom: 20px">
-					<p:printer target="facD" />
 				</p:commandButton>
-    </p:dialog>
-</h:form>
-	
+			</p:column>
+		</p:dataTable>
+		<p:dialog header="Information facture" widgetVar="facInfo"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="facD" style="display:block; margin:auto;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty ListFactureBean.facture}"
+					columnClasses="label,value">
+
+					<h:outputText value="Date:" />
+					<h:outputText value="#{ListFactureBean.facture.dateDeFacturation}" />
+
+					<h:outputText value="Nom client:" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.client.nom}" />
+
+					<h:outputText value="prenom client:" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.client.prenom}" />
+
+					<h:outputText value="adresse client:" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.client.adressPostal}" />
+
+					<h:outputText value="Modele voiture" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.voiture.model}" />
+
+					<h:outputText value="Reservation date debut" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.dateDeSortie}" />
+
+					<h:outputText value="Reservation date fin" />
+					<h:outputText
+						value="#{ListFactureBean.facture.reservation.dateDeRentrer}" />
+
+					<h:outputText value="Prix a payer" />
+					<h:outputText value="#{ListFactureBean.prix}" />
+				</p:panelGrid>
+			</p:outputPanel>
+			<p:commandButton value="Print" type="button" icon="ui-icon-print"
+				style="display:block;margin-bottom: 20px">
+				<p:printer target="facD" />
+			</p:commandButton>
+		</p:dialog>
+	</h:form>
+
 </h:body>
 </html>

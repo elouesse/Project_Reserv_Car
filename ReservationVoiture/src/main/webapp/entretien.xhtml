@@ -7,9 +7,10 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 
 <h:head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<title>Liste entetiens</title>
-	<h:outputStylesheet library="css" name="style.css"> </h:outputStylesheet>
+	<h:outputStylesheet library="css" name="style.css">
+	</h:outputStylesheet>
 </h:head>
 
 
@@ -17,32 +18,85 @@
 
 
 
-	<h:form>
-		<p:dataTable var="entr" value="#{EntretienBean.entretiens}" paginator="true"
-			rows="13" styleClass="paginated">
-			<p:column headerText="Type">
+	<h:form id="formEntretient">
+		<p:dataTable var="entr" id="entretienList" value="#{EntretienBean.entretiens}"
+			paginator="true" rows="13" styleClass="paginated"
+			 widgetVar="entretienTable" filteredValue="#{EntretienBean.fentretiens}" >
+			 	<f:facet name="header">
+			 	
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="PF('entretienTable').filter()" style="width:150px"
+						placeholder="Enter keyword" />
+						<p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+        <p:columnToggler datasource="entretienList" trigger="toggler" />	
+				</p:outputPanel>
+				 
+			</f:facet>
+			<p:column headerText="Type"
+			filterBy="#{entr.typeEntretient}"
+				sortBy="#{entr.typeEntretient}">
 				<h:outputText value="#{entr.typeEntretient}" />
 			</p:column>
 
-			<p:column headerText="Immatriculation">
+			<p:column headerText="Modèle"
+				filterBy="#{entr.voiture.model}"
+				sortBy="#{entr.voiture.model}">
+				<h:outputText value="#{entr.voiture.model}" />
+			</p:column>
+
+			<p:column headerText="Immatriculation"
+				filterBy="#{entr.voiture.immatricule}"
+				sortBy="#{entr.voiture.immatricule}">
 				<h:outputText value="#{entr.voiture.immatricule}" />
 			</p:column>
+			
 
-			<p:column headerText="Date entretien">
+			<p:column headerText="Date entretien"
+				sortBy="#{entr.dateEntretient}">
 				<h:outputText value="#{entr.dateEntretient}" />
 			</p:column>
-
-			<p:column headerText="Prix">
+			<p:column headerText="Kilometrage"
+			sortBy="#{entr.kilometrage}">
 				<h:outputText value="#{entr.prixEntrtient}" />
 			</p:column>
+			
+			<p:column headerText="Prix"
+			sortBy="#{entr.prixEntrtient}">
+				<h:outputText value="#{entr.prixEntrtient}" />
+			</p:column>
+			
 
 			<p:growl id="messages" />
-			<p:column headerText="Button">
-				<p:commandButton type="button" title="Save" icon="ui-icon-wrench" />
-				<p:commandButton actionListener="#{buttonView.buttonAction}"
-					icon="ui-icon-trash" />
-				<p:commandButton type="button" title="Print" icon="ui-icon-search" />
-				<p:commandButton value="Facture" type="button" title="Print" icon="ui-icon-search" />
+			<p:column headerText="Actions">
+			
+		<p:commandButton icon="ui-icon-wrench" id="modifier"
+							action="#{EntretienBean.goToUpdateEntretien}">
+							<f:setPropertyActionListener value="#{entr}"
+								target="#{EntretienBean.selectEntretien}" />
+						</p:commandButton>
+						<p:tooltip id="toolTipModifier" for="modifier"
+							value="Modifier les attributs de l'entretien" position="top" />
+			<p:commandButton action="#{EntretienBean.deleteEntr}"
+							icon="ui-icon-circle-close" id="supprimer" update="delete">
+							<f:setPropertyActionListener value="#{entr.idEntretient}"
+								target="#{EntretienBean.idEntretient}" />
+							<p:confirm header="Confirmation" message="Etes-vous sur?"
+								icon="ui-icon-alert" />
+							<f:ajax update=":formEntretient:entretienList" />
+						</p:commandButton>
+						<p:growl id="delete" showDetail="true" life="4000" />
+						<p:tooltip id="toolTipSupprimer" for="supprimer"
+							value="Supprimer l'entretien (DANGEREUX)" position="top" />
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Oui" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+								update=":formEntretient:entretienList" />
+							<p:commandButton value="Annuler" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+				
 			</p:column>
 		</p:dataTable>
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Mis a jour des entretiens</title>
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<h:body>
+	<b:container layout="fluid">
+		<h:form id="updateVoitureForm">
+			<!-- DEBUT PANNEAU -->
+			<p:fieldset>
+				<p:panelGrid id="panelGrid" columns="3" cellpadding="5"
+					layout="grid" styleClass="ui-panelgrid-blank">
+					<f:facet name="header">
+						<h:outputText value="Mis a jour de l'entretien"
+							style="color:black;" />
+					</f:facet>
+
+					<p:outputLabel value="Attributs" style="color:black;" />
+					<p:outputLabel value="Nouvelle valeur" style="color:blue;" />
+					<p:outputLabel />
+
+					<p:outputLabel for="kilometrage" value="Kilometrage : " />
+					<p:inputNumber id="kilometrage" value="#{EntretienBean.selectEntretien.kilometrage}"
+						style="width:125px">
+					
+					</p:inputNumber>
+				
+					
+					<p:message for="kilometrage" />
+
+					<p:outputLabel for="date" value="date entretien : " />
+					<p:calendar id="date" value="#{EntretienBean.selectEntretien.dateEntretient}"
+				pattern="MM/dd/yyyy HH:mm" pages="2"
+				requiredMessage="Choisir une Date" required="true" />
+					
+					<p:message for="date" />
+
+					<p:outputLabel for="prix" value="prix entretient : " />
+					<p:inputText id="prix" value="#{EntretienBean.selectEntretien.prixEntrtient}"
+						style="width:125px">
+					
+					</p:inputText>
+					
+					<p:message for="prix" />
+
+
+					<p:commandButton id="revenir" value="Revenir" action="entretien?faces-redirect=true"
+						icon="ui-icon-arrowreturnthick-1-w">
+						<f:param />
+					</p:commandButton>
+					<p:commandButton id="update" value="Mettre a jour" type="submit"
+						icon="ui-icon-check" update="updateConfirmation"
+						action="#{EntretienBean.updateEntretien}" >
+
+						<p:confirm header="Confirmation" message="Etes-vous sur?"
+							icon="ui-icon-alert" />
+
+					</p:commandButton>
+					<p:commandButton value="Annuler" type="reset" icon="ui-icon-close" />
+					<p:outputLabel value="" />
+				</p:panelGrid>
+			</p:fieldset>
+			<!-- FIN PANNEAU -->
+			<p:growl id="updateConfirmation" showDetail="true" life="2000" />
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+				<p:commandButton value="Oui" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+
+				<p:commandButton value="Annuler" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+			</p:confirmDialog> 
+
+		</h:form>
+	</b:container>
+</h:body>
+</html>

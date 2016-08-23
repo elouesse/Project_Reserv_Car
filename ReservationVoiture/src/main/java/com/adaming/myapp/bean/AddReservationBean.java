@@ -8,17 +8,18 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adaming.myapp.Exception.ExceptionDispoVoiture;
 import com.adaming.myapp.entities.Client;
+import com.adaming.myapp.entities.Facture;
 import com.adaming.myapp.entities.Reservation;
 import com.adaming.myapp.entities.Voiture;
 import com.adaming.myapp.service.IClientService;
+import com.adaming.myapp.service.IFactureService;
 import com.adaming.myapp.service.IReservationService;
 import com.adaming.myapp.service.IVoitureService;
 
@@ -32,6 +33,8 @@ public class AddReservationBean {
 	private IVoitureService serviceVoiture;
 	@Autowired
 	private IClientService serviceClient;
+	@Autowired
+	private IFactureService serviceFacture;
 
 	public AddReservationBean() {
 	}
@@ -58,7 +61,10 @@ public class AddReservationBean {
 
 	//Client Attributes
 	private Long idClient;
-
+	
+	
+	private Date dateInit;
+	private Date dateInit2;
 	private Voiture selectedCar;
 	private Voiture rentedCar;
 	private Client customer;
@@ -69,13 +75,23 @@ public class AddReservationBean {
 	@PostConstruct
     public void init() {
 		tabC= serviceClient.getClients();
+		dateInit = new Date();
+		dateInit2=dateInit;
+	}
+	
+	public void chooseDate() {
+		dateInit2=dateDeSortie;
+		dateDeRentrer = dateInit2;
 	}
 	
 	public void getClient() {
 		customer= serviceClient.getClient(idClient);
 	}
 
-	public void reservPeriod() throws ExceptionDispoVoiture {
+	public void reservPeriod() throws Exception {
+		if(dateDeRentrer.before(dateDeSortie))
+			throw new Exception("Cette date de retour n'est pas possible");
+		else
 		heureDeSortie = Integer.toString(dateDeSortie.getHours());
 		heureDeRentrer = Integer.toString(dateDeRentrer.getHours());
 		DateTime d1=new DateTime(dateDeSortie);
@@ -92,8 +108,19 @@ public class AddReservationBean {
 		Reservation r = new Reservation(prix, dateDeReservation, dateDeRentrer, dateDeSortie, heureDeSortie, nombresDeJours,
 				etatDeReservation,heureDeRentrer);
 		serviceReservation.addReservation(r, idClient, rentedCar.getIdvoiture());
+		serviceFacture.addFacture(1l, r.getIdreservation(), new Facture(dateDeReservation));
+		this.tabV = null;
+		this.dateDeRentrer = null;
+		this.dateDeSortie = null;
 	}
 	
+	public void reset() {
+		this.tabV = null;
+		this.dateDeRentrer = null;
+		this.dateDeSortie = null;
+		this.dateDeReservation = null;
+        RequestContext.getCurrentInstance().reset("forme:panel");
+    }
 	
 	public void buttonAction(ActionEvent actionEvent) {
         addMessage("Votre Reservation a ete enregistre!!");
@@ -279,6 +306,22 @@ public class AddReservationBean {
 
 	public void setRentedCar(Voiture rentedCar) {
 		this.rentedCar = rentedCar;
+	}
+
+	public Date getDateInit() {
+		return dateInit;
+	}
+
+	public void setDateInit(Date dateInit) {
+		this.dateInit = dateInit;
+	}
+
+	public Date getDateInit2() {
+		return dateInit2;
+	}
+
+	public void setDateInit2(Date dateInit2) {
+		this.dateInit2 = dateInit2;
 	}
 
 }

@@ -8,35 +8,55 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
-<!--  
-	 <bean id="daoAgence" class="com.adaming.myapp.dao.AgenceDaoImpl"></bean>
-	<bean id="serviceAgence" class="com.adaming.myapp.service.AgenceServiceImpl">	 
-	<property name="daoAgence" ref="daoAgence"></property></bean>
-	
-	<bean id="daoEntretien" class="com.adaming.myapp.dao.EntretienDaoImpl"></bean>
-	<bean id="serviceEntretien" class="com.adaming.myapp.service.EntretienServiceImpl">	 
-	<property name="daoEntretien" ref="daoEntretien"></property></bean>
-	
-	<bean id="daoFacture" class="com.adaming.myapp.dao.FactureDaoImpl"></bean>
-	<bean id="serviceFacture" class="com.adaming.myapp.service.FactureServiceImpl">	 
-	<property name="daoFacture" ref="daoFacture"></property></bean>
- 
- 	<bean id="ClientDaoImpl" class="com.adaming.myapp.dao.ClientDaoImpl"></bean>
-	<bean id="ClientServiceImpl" class="com.adaming.myapp.service.ClientServiceImpl">
-		<property name="daoClient" ref="ClientDaoImpl"></property>
-	</bean>
-	
-	<bean id="VoitureDaoImpl" class="com.adaming.myapp.dao.VoitureDaoImpl"></bean>
-	<bean id="VoitureServiceImpl" class="com.adaming.myapp.service.VoitureServiceImpl">
-		<property name="daoVoiture" ref="VoitureDaoImpl"></property>
-	</bean>
-	
-	<bean id="ReservationDaoImpl" class="com.adaming.myapp.dao.ReservationDaoImpl"></bean>
-	<bean id="ReservationServiceImpl" class="com.adaming.myapp.service.ReservationServiceImpl">
-		<property name="daoReserv" ref="ReservationDaoImpl"></property>
-	</bean>
--->
+	<!-- <bean id="daoAgence" class="com.adaming.myapp.dao.AgenceDaoImpl"></bean> 
+		<bean id="serviceAgence" class="com.adaming.myapp.service.AgenceServiceImpl"> 
+		<property name="daoAgence" ref="daoAgence"></property></bean> <bean id="daoEntretien" 
+		class="com.adaming.myapp.dao.EntretienDaoImpl"></bean> <bean id="serviceEntretien" 
+		class="com.adaming.myapp.service.EntretienServiceImpl"> <property name="daoEntretien" 
+		ref="daoEntretien"></property></bean> <bean id="daoFacture" class="com.adaming.myapp.dao.FactureDaoImpl"></bean> 
+		<bean id="serviceFacture" class="com.adaming.myapp.service.FactureServiceImpl"> 
+		<property name="daoFacture" ref="daoFacture"></property></bean> <bean id="ClientDaoImpl" 
+		class="com.adaming.myapp.dao.ClientDaoImpl"></bean> <bean id="ClientServiceImpl" 
+		class="com.adaming.myapp.service.ClientServiceImpl"> <property name="daoClient" 
+		ref="ClientDaoImpl"></property> </bean> <bean id="VoitureDaoImpl" class="com.adaming.myapp.dao.VoitureDaoImpl"></bean> 
+		<bean id="VoitureServiceImpl" class="com.adaming.myapp.service.VoitureServiceImpl"> 
+		<property name="daoVoiture" ref="VoitureDaoImpl"></property> </bean> <bean 
+		id="ReservationDaoImpl" class="com.adaming.myapp.dao.ReservationDaoImpl"></bean> 
+		<bean id="ReservationServiceImpl" class="com.adaming.myapp.service.ReservationServiceImpl"> 
+		<property name="daoReserv" ref="ReservationDaoImpl"></property> </bean> -->
+			
+		<!-- Resolves views selected for rendering resources 
+		in the /WEB-INF/views directory -->
 
+
+		<!-- encoder -->
+	<bean id="encoder"
+	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	<constructor-arg value="12"></constructor-arg>
+	</bean>
+	<!-- ~~~~~~~~~ -->
+	
+	<!-- security -->
+	<security:http pattern="/Login" security="none"/> 
+	<security:http pattern="/resources/**" security="none"/> 
+	<security:http auto-config="true">
+		 <security:access-denied-handler error-page="/accessDeniedPage" />
+		<security:intercept-url pattern="/**" access="ROLE_ADMIN" />
+		<security:form-login login-page="/Login" default-target-url="/"  authentication-failure-url="/Login?error=true" />
+		<security:logout logout-success-url="/Login"/>
+	</security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+		<security:password-encoder ref="encoder"/>
+			<security:user-service>
+				<security:user name="admin"
+					password="$2a$12$VlL90PjyMEUXXXA9VkCfPONkDFyjDrenA1f7EIZwJOF459LaXRNoy"
+					authorities="ROLE_ADMIN" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<!-- fin security -->
+	
 	<bean id="datasource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -63,7 +83,7 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	<context:annotation-config></context:annotation-config>
-	
+
 	<context:component-scan base-package="com.adaming.myapp" />
 
 </beans>

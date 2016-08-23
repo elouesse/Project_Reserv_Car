@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Ajouter une Reservation</title>
 </h:head>
 <h:body>
@@ -31,30 +31,60 @@
 	</h:form>
 
 	<!-- Chercher un Periode de dispo -->
-	<h:form>
-		<p:messages autoUpdate="true" />
-		<h:panelGrid columns="2" cellpadding="5">
-			<f:facet name="header">
-            Choisir des periode de location
+	<h:form id="forme">
+		<p:panel id="panel" style="margin-bottom:10px;">
+			<p:messages autoUpdate="true" />
+			<h:panelGrid columns="2" cellpadding="5">
+				<f:facet name="header">
+            Choisir une periode de location
        		 </f:facet>
-			<p:outputLabel for="multi1" value="Date De Sortie:" />
-			<p:calendar id="multi1" value="#{addReservation.dateDeSortie}"
-				pattern="MM/dd/yyyy HH:mm" pages="2"
-				requiredMessage="Choisir une Date" required="true" />
+				<p:outputLabel for="multi1" value="Date De Sortie:" />
+				<p:calendar id="multi1" value="#{addReservation.dateDeSortie}"
+					pattern="MM/dd/yyyy HH:mm" navigator="true" pages="2" mindate="#{addReservation.dateInit}" 
+					requiredMessage="Choisir une Date" required="true"  >
+					 <p:ajax event="dateSelect" listener="#{addReservation.chooseDate}" update="multi2" render="multi2"/>
+				</p:calendar>
 
-			<p:outputLabel for="multi2" value="Date De Retour:" />
-			<p:calendar id="multi2" value="#{addReservation.dateDeRentrer}"
-				pattern="MM/dd/yyyy HH:mm" pages="2"
-				requiredMessage="Choisir une Date" required="true" />
+				<p:outputLabel for="multi2" value="Date De Retour:" />
+				<p:calendar id="multi2" value="#{addReservation.dateDeRentrer}"
+					pattern="MM/dd/yyyy HH:mm" navigator="true" pages="2" mindate="#{addReservation.dateInit2}"
+					requiredMessage="Choisir une Date" required="true" />
 
-			<p:commandButton value="Submit"
-				actionListener="#{addReservation.reservPeriod}" icon="ui-icon-check"
-				ajax="false" />
 
-		</h:panelGrid>
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit"
+			actionListener="#{addReservation.reservPeriod}" icon="ui-icon-check"
+			ajax="false" style="margin-right:20px;" />
+			
+		<p:commandButton value="Reset"
+			actionListener="#{addReservation.reset}" immediate="true"
+			ajax="false">
+			<p:resetInput target="forme:panel" style="margin-right:20px;" />
+		</p:commandButton>
+		
+		
+		
+		<p:ajaxExceptionHandler type="java.lang.Exception"
+                            update="exceptionDialog"
+                            onexception="PF('exceptionDialog').show();" />
+                            
+                            
+        <p:dialog id="exceptionDialog" header="Error occured!" widgetVar="exceptionDialog"
+              height="50px">
+        Message: #{pfExceptionHandler.message} <br/>
+        StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> <br />
+ 
+        <p:button onclick="document.location.href = document.location.href;"
+                  value="Reload!"
+                  rendered="#{pfExceptionHandler.type == 'java.lang.Exception'}" />
+    </p:dialog>
 
 
 	</h:form>
+	
+	<p:separator />
 
 	<!-- 	Liste des voitures dispo -->
 	<h:form id="form">
@@ -163,13 +193,19 @@
 					<p:outputLabel value="#{addReservation.customer.prenom}" />
 
 					<p:outputLabel value="Date De Reservation" />
-					<p:outputLabel value="#{addReservation.dateDeReservation}" />
+					<p:outputLabel value="#{addReservation.dateDeReservation}" >
+						<f:convertDateTime pattern="EEE, MMM d, yyyy" />
+					</p:outputLabel>
 
 					<p:outputLabel value="Date De Sortie" />
-					<p:outputLabel value="#{addReservation.dateDeSortie}" />
+					<p:outputLabel value="#{addReservation.dateDeSortie}" >
+						<f:convertDateTime pattern="EEE, MMM d, yyyy 'a' hh:mm" />
+					</p:outputLabel>
 
 					<p:outputLabel value="Date De Retour:" />
-					<p:outputLabel value="#{addReservation.dateDeRentrer}" />
+					<p:outputLabel value="#{addReservation.dateDeRentrer}" >
+						<f:convertDateTime pattern="EEE, MMM d, yyyy 'a' hh:mm" />
+					</p:outputLabel>
 
 					<p:outputLabel value="Prix de la reservation" />
 					<p:outputLabel
@@ -191,7 +227,16 @@
 
 				<p:commandButton value="Submit" update=":form:saveReserv"
 					actionListener="#{addReservation.addReserv}" icon="ui-icon-check"
-					title="Reserver" oncomplete="PF('successDialog').show()" />
+					title="Reserver" oncomplete="PF('successDialog').show()" >
+					<p:confirm header="Confirmation" message="Etes-vous sur?" icon="ui-icon-alert" />
+				</p:commandButton>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Oui" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Non" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
 
 			</p:outputPanel>
 		</p:dialog>
@@ -210,6 +255,7 @@
 			</p:outputPanel>
 		</p:dialog>
 		
+
 	</h:form>
 
 

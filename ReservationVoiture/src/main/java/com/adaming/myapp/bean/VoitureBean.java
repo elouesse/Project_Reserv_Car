@@ -73,6 +73,11 @@ public class VoitureBean {
 	private FiltreHuile filtreHuile;
 	private ChaineDistribution chaineDist;
 	private String immatriculation;
+	private Boolean cok1 = false;
+	private Boolean cok2 = false;
+	private Boolean cok3 = false;
+	private Date dateEntretienInit;
+	private Date dateEntretienValue;
 
 	/*
 	 * 
@@ -83,6 +88,7 @@ public class VoitureBean {
 	@PostConstruct
 	public void init() {
 		refreshListe();
+		setDateEntretienInit(new Date());
 
 		carburants = new HashMap<String, String>();
 		carburants.put("Essence 95", "Essence 95");
@@ -92,8 +98,15 @@ public class VoitureBean {
 
 		modeles = new HashMap<String, String>();
 		modeles.put("Renault", "Renault");
-		modeles.put("BMW", "BMW");
-		modeles.put("Volvo", "Volvo");
+		modeles.put("Mercedes", "Mercedes");
+		modeles.put("Alfa Romeo", "Alfa Romeo");
+		modeles.put("Bugatti", "Bugatti");
+		modeles.put("Chevrolet", "Chevrolet");
+		modeles.put("Dodge", "Dodge");
+		modeles.put("Porshce", "Porsche");
+		modeles.put("Rolce Royce", "Rolce Royce");
+		modeles.put("Audi", "Audi");
+		modeles.put("Cadillac", "Cadillac");
 		modeles.put("Citroen", "Citroen");
 		modeles.put("BatMobile", "BatMobile");
 		modeles.put("Honda", "Honda");
@@ -155,15 +168,6 @@ public class VoitureBean {
 		return "updateCompteur?faces-redirect=true";
 	}
 
-	public void addEntretient(Long idV) {
-		setVidange(new Vidange(new Date(), kilometrage + 10000., 80));
-		setFiltreHuile(new FiltreHuile(new Date(), kilometrage + 30000., 150));
-		setChaineDist(new ChaineDistribution(new Date(), kilometrage + 70000., 600));
-		serviceEntretien.addEntretien(getVidange(), idV);
-		serviceEntretien.addEntretien(getFiltreHuile(), idV);
-		serviceEntretien.addEntretien(getChaineDist(), idV);
-	}
-
 	public void addVoiture() {
 		voiture = new Voiture(modele, immatriculation, kilometrage, prix, type, carburant, etat);
 		setVoiture(serviceVoiture.addVoiture(voiture));
@@ -171,6 +175,15 @@ public class VoitureBean {
 		addEntretient(idVoiture);
 		refreshListe();
 		voiture = null;
+	}
+	
+	public void addEntretient(Long idV) {
+		setVidange(new Vidange(new Date(), kilometrage + 10000., 80));
+		setFiltreHuile(new FiltreHuile(new Date(), kilometrage + 30000., 150));
+		setChaineDist(new ChaineDistribution(new Date(), kilometrage + 70000., 600));
+		serviceEntretien.addEntretien(getVidange(), idV);
+		serviceEntretien.addEntretien(getFiltreHuile(), idV);
+		serviceEntretien.addEntretien(getChaineDist(), idV);
 	}
 
 	public void updateVoiture() {
@@ -202,32 +215,33 @@ public class VoitureBean {
 	}
 
 	public void updateCompteur() {
+		System.out.println("Id : " + voitureSelect.getIdvoiture());
 		voitureSelect.setKilometrage(kilometrage);
 		serviceVoiture.updateVoiture(voitureSelect);
-		entretiens = serviceEntretien.getEntretiensOfOneCar(idVoiture);
+		entretiens = serviceEntretien.getEntretiensOfOneCar(voitureSelect.getIdvoiture());
 		Iterator<Entretien> tabE = entretiens.iterator();
-		Boolean cok = false;
-		System.out.println("ffs");
 		while (tabE.hasNext()) {
 			entretien = tabE.next();
-			System.out.println(entretien.getClass().getSimpleName());
 			switch (entretien.getClass().getSimpleName()) {
 			case "Vidange":
-				System.out.println("Vidange");
-				cok = serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 10000.);
-				if (cok = true) {
-					
+				cok1 = serviceVoiture.alertEntretien(voitureSelect.getIdvoiture(), entretien.getIdEntretient(), 10000.);
+				if (cok1 = true) {
+					alertEntretien("Alerte", "Cette voiture a besoin d'une vidange.");
 				}
 				break;
 
 			case "FiltreHuile":
-				System.out.println("FiltreHuile");
-				serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 30000.);
+				cok2 = serviceVoiture.alertEntretien(voitureSelect.getIdvoiture(), entretien.getIdEntretient(), 30000.);
+				if (cok2 = true) {
+					alertEntretien("Alerte", "Cette voiture a besoin d'un changement de son filtre a huile.");
+				}
 				break;
 
 			case "ChaineDistribution":
-				System.out.println("ChaineDistribution");
-				serviceVoiture.alertEntretien(idVoiture, entretien.getIdEntretient(), 70000.);
+				cok3 = serviceVoiture.alertEntretien(voitureSelect.getIdvoiture(), entretien.getIdEntretient(), 70000.);
+				if (cok3 = true) {
+					alertEntretien("Alerte", "Cette voiture a besoin d'un entretien de la chaine de distribution.");
+				}
 				break;
 
 			default:
@@ -260,6 +274,11 @@ public class VoitureBean {
 
 	public void messageUpdate(String summary, String detail) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	public void alertEntretien(String msg, String detail) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, detail);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
@@ -523,6 +542,46 @@ public class VoitureBean {
 
 	public void setEntretien(Entretien entretien) {
 		this.entretien = entretien;
+	}
+
+	public Boolean getCok1() {
+		return cok1;
+	}
+
+	public void setCok1(Boolean cok1) {
+		this.cok1 = cok1;
+	}
+
+	public Boolean getCok2() {
+		return cok2;
+	}
+
+	public void setCok2(Boolean cok2) {
+		this.cok2 = cok2;
+	}
+
+	public Boolean getCok3() {
+		return cok3;
+	}
+
+	public void setCok3(Boolean cok3) {
+		this.cok3 = cok3;
+	}
+
+	public Date getDateEntretienInit() {
+		return dateEntretienInit;
+	}
+
+	public void setDateEntretienInit(Date dateEntretienInit) {
+		this.dateEntretienInit = dateEntretienInit;
+	}
+
+	public Date getDateEntretienValue() {
+		return dateEntretienValue;
+	}
+
+	public void setDateEntretienValue(Date dateEntretienValue) {
+		this.dateEntretienValue = dateEntretienValue;
 	}
 
 }

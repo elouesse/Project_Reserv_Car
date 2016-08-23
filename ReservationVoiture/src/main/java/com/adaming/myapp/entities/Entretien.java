@@ -34,7 +34,7 @@ public class Entretien {
 	@Transient
 	private String typeEntretient;
 	private Date dateEntretient;
-	private  Double Kilommetrage;
+	private  Double kilometrage;
 	private Integer prixEntrtient;
 	
 	//association
@@ -68,12 +68,12 @@ public class Entretien {
 		this.dateEntretient = dateEntretient;
 	}
 
-	public Double getKilommetrage() {
-		return Kilommetrage;
+	public Double getKilometrage() {
+		return kilometrage;
 	}
 
-	public void setKilommetrage(Double kilommetrage) {
-		Kilommetrage = kilommetrage;
+	public void setKilometrage(Double kilometrage) {
+		this.kilometrage = kilometrage;
 	}
 
 	public Integer getPrixEntrtient() {
@@ -98,11 +98,11 @@ public class Entretien {
 	
 
 
-	public Entretien(Date dateEntretient, Double kilommetrage,
+	public Entretien(Date dateEntretient, Double kilometrage,
 			Integer prixEntrtient) {
 		super();
 		this.dateEntretient = dateEntretient;
-		Kilommetrage = kilommetrage;
+		this.kilometrage = kilometrage;
 		this.prixEntrtient = prixEntrtient;
 	}
 

@@ -15,7 +15,8 @@ import com.adaming.myapp.entities.Client;
  * 
  * author : thomas bernard
  */
-@Repository(value="daoAgence")
+
+@Repository(value="dao")
 public class AgenceDaoImpl implements IAgenceDao {
 
 	@PersistenceContext

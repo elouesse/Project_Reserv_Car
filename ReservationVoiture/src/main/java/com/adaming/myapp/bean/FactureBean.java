@@ -143,6 +143,7 @@ public class FactureBean {
 	@PostConstruct
 	public void getFacts(){	
 		factures = service.getFactures();
+		tab2 = service.getFactures();
 	}
 	public void getInfoFact(){
 		facture = service.getFactureById(idFacture);
