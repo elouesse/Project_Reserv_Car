@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="nav-bar.xhtml" />
+	<b:container layout="fluid" fluid="true">
+		<b:panel mediumScreen="half" offset-md="2" col-md="8" >
+			<h:outputText styleClass="ErrorPage" value="Erreur : il s'est passé quelque chose d'imprévu ou bien vous avez saisi une mauvaise adresse" />
+			<br/>
+			<p:link  value="Lien vers l'index du site" outcome="index"/> 
+		</b:panel>
+		<b:image style-class="ErrorImage" medium-screen="one-third" library="img" title="Erreur!" name="error.jpg" tooltip="Erreur!" offset-md="4" tooltip-position="bottom"></b:image>
+	</b:container>
+</h:body>
+
+</html>

@@ -154,11 +154,11 @@ public class VoitureDaoImpl implements IVoitureDao {
 		List<Entretien> tab = req.getResultList();
 		log.info("L'entretien recupere est le "+tab.get(0).getIdEntretient());
 //		Entretien e = em.find(Entretien.class, idE);
-		if(tab.get(0).getVoiture()!=v)
-		{
-			
-		}
-		if(pref<=(v.getKilometrage()-tab.get(0).getKilommetrage()))
+//		if(tab.get(0).getVoiture()!=v)
+//		{
+//			
+//		}
+		if(pref<=(v.getKilometrage()-tab.get(0).getKilometrage()))
 		{
 			log.info("Cette voiture a besoin d'un entretien");
 			return true;

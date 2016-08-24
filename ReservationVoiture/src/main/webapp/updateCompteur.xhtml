@@ -14,8 +14,8 @@
 <h:body>
 	<ui:include src="nav-bar.xhtml" />
 	<h:form id="updateCompteurForm">
-		<b:container layout="fluid">
-			<b:panelGrid colSpans="3,9" size="xs" col-lg="12" >
+		<b:container layout="fluid" fluid="true">
+			<b:panelGrid colSpans="4,8" size="xs" col-md="8" offset-md="2">
 				<h:outputLabel value="id :" />
 				<b:inputText value="#{VoitureBean.voitureSelect.idvoiture}"
 					disabled="true" />
@@ -38,7 +38,8 @@
 				<b:inputText value="#{VoitureBean.voitureSelect.etatVoiture}"
 					disabled="true" />
 			</b:panelGrid>
-			<b:panel title="Mis a jour du compteur" look="primary" col-lg="12">
+			<b:panel title="Mis a jour du compteur" look="primary" col-md="8"
+				offset-md="2">
 				<b:row>
 					<b:column>
 						<h:outputText value="Kilométrage actuel: " />
@@ -58,7 +59,8 @@
 						<h:outputText value="Nouveau kilométrage: " />
 					</b:column>
 					<b:column>
-						<b:inputText value="#{VoitureBean.kilometrage}" required="true">
+						<b:inputText value="#{VoitureBean.kilometrage}" required="true"
+							requiredMessage="Veuillez saisir un nouveau kilométrage.">
 							<f:facet name="append">
 								<h:outputText value=" km" />
 							</f:facet>
@@ -68,67 +70,116 @@
 				<b:row>
 					<b:column span="10"></b:column>
 					<b:column span="1">
-						<b:commandButton value="Confirmer" ajax="true"
-							update="updateCompteurForm" icon="plus-sign" look="success"
-							action="#{VoitureBean.updateCompteur}" />
+						<b:commandButton value="Confirmer" ajax="true" icon="plus-sign"
+							look="success" action="#{VoitureBean.updateCompteur}" />
 					</b:column>
 				</b:row>
 			</b:panel>
-
 		</b:container>
-		<b:container layout="fluid" >
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" />
-			<p:growl id="update" showDetail="true" life="5000" />
-
-			<b:panel rendered="#{VoitureBean.cok1}" col-lg="12">
-				<f:facet name="header">
-					<b:label text="Vidange"></b:label>
-				</f:facet>
-				<b:label text="Date de l'entretien"></b:label>
-				<b:datepicker placeholder="Date de l'entretien" span="2"></b:datepicker>
-				<b:inputText value="" span="3" placeholder="Row 1 - 6 columns"
-					label="Nouveau kilométrage"></b:inputText>
-				<b:inputText value="" span="3" placeholder="Row 2 - 3 columns"
-					label="Prix"></b:inputText>
-				<b:commandButton value="Ajouter" ajax="true"
-					update="updateCompteurForm" icon="plus-sign" look="success" />
+		<b:container layout="fluid" fluid="true">
+			<b:panel col-md="8" offset-md="2">
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+				<!-- <p:growl id="update" showDetail="false" life="5000" /> -->
 			</b:panel>
-
-			<b:panel title="Vidange" col-lg="12" >
-				<p:outputLabel>Date de l'entretien</p:outputLabel>
-				<p:outputLabel for="datetime" value="Popup:" />
-				<p:calendar id="datetime" pattern="dd/MM/yyyy " value="#{VoitureBean.dateEntretienValue}" mindate="#{VoitureBean.dateEntretienInit}" requiredMessage="Choisir une Date" required="true"/>
-				<b:inputText label="Prix" >
+			
+			<b:panel title="Vidange" col-md="8" offset-md="2"
+				rendered="#{VoitureBean.cok1}">
+				<p:outputLabel for="datetime1" value="Date de l'entretien :" />
+				<p:calendar id="datetime1" pattern="dd/MM/yyyy HH:mm"
+					navigator="true" pages="2"
+					value="#{VoitureBean.dateEntretienValue1}"
+					mindate="#{VoitureBean.dateEntretienInit}"
+					requiredMessage="Choisir une Date pour la vidange" required="true">
+				</p:calendar>
+				<b:message  for="datetime1" show-detail="true"/>
+				
+				<b:inputText label="Prix" value="#{VoitureBean.prixEnt1}"
+					required="true" required-message="Définir un prix pour la vidange." id="prixEnt1">
 					<f:facet name="append">€</f:facet>
 				</b:inputText>
-				<b:inputText label="Kilométrage">
+				<b:message  for="prixEnt1" show-detail="true"/>
+				
+				<b:inputText label="Intervalle pour le prochain entretien (km)"
+					value="#{VoitureBean.kilometrageEnt1}" required="true" required-message="Définir le kilométrage pour la prochaine vidange." id="km1">
+					<f:facet name="append">Km</f:facet>
+				</b:inputText>
+				<b:message  for="km1" show-detail="true"/>
+			</b:panel>
+
+			<b:panel title="Entretien filtre a huile" col-md="8" offset-md="2"
+				rendered="#{VoitureBean.cok2}">
+				<b:row>
+					<b:column>
+					<p:outputLabel for="datetime2" value="Date de l'entretien :" />
+					</b:column>
+					<b:column>
+					<p:calendar id="datetime2" pattern="dd/MM/yyyy HH:mm"
+					navigator="true" pages="2"
+					value="#{VoitureBean.dateEntretienValue2}"
+					mindate="#{VoitureBean.dateEntretienInit}"
+					requiredMessage="Choisir une Date pour l'entretien du filtre." required="true">
+				</p:calendar>
+					</b:column>
+					<b:column>
+					<b:message  for="datetime2" show-detail="true"/>
+					</b:column>
+				</b:row>
+				
+				<b:row>
+					<b:column>
+						<p:outputLabel for="prixEnt2" value="Prix :" />
+					</b:column>
+					<b:column>
+						<b:inputText value="#{VoitureBean.prixEnt2}"
+					required="true" required-message="Définir un prix pour le filtre a huile." id="prixEnt2">
+					<f:facet name="append">€</f:facet>
+				</b:inputText>
+					</b:column>
+					<b:column>
+						<b:message  for="prixEnt2" show-detail="true"/>
+					</b:column>
+				</b:row>
+				
+				<b:row>
+				
+				</b:row>
+				
+				
+				
+				<b:inputText label="Intervalle pour le prochain entretien (km)"
+					value="#{VoitureBean.kilometrageEnt2}" required="true" required-message="Définir le kilométrage pour le prochain entretien (Filtre a huile).">
+					<f:facet name="append">Km</f:facet>
+				</b:inputText>
+				<b:message  for="datetime2" show-detail="true"/>
+				
+			</b:panel>
+
+			<b:panel title="Entretien chaine de distribution" col-md="8"
+				offset-md="2" rendered="#{VoitureBean.cok3}">
+				<p:outputLabel for="datetime3" value="Date de l'entretien :" />
+				<p:calendar id="datetime3" pattern="dd/MM/yyyy HH:mm"
+					navigator="true" pages="2"
+					value="#{VoitureBean.dateEntretienValue3}"
+					mindate="#{VoitureBean.dateEntretienInit}"
+					requiredMessage="Choisir une Date pour l'entretien de la chaine de distribution." required="true">
+				</p:calendar>
+				<b:inputText label="Prix" value="#{VoitureBean.prixEnt3}"
+					required="true" required-message="Définir un prix pour la chaine de distribution.">
+					<f:facet name="append">€</f:facet>
+				</b:inputText>
+				<b:inputText label="Intervalle pour le prochain entretien (km)"
+					value="#{VoitureBean.kilometrageEnt3}" required="true" required-message="Définir le kilométrage pour le prochain entretien (Chaine de distribution).">
 					<f:facet name="append">Km</f:facet>
 				</b:inputText>
 			</b:panel>
+		</b:container>
 
-			<b:panel rendered="#{VoitureBean.cok2}" span="12">
-				<b:label text="Filtre a huile"></b:label>
-				<b:inputText value="" span="2" placeholder="Row 1 - 3 columns"
-					label="Date" />
-				<b:inputText value="" span="3" placeholder="Row 1 - 6 columns"
-					label="Nouveau kilométrage" />
-				<b:inputText value="" span="3" placeholder="Row 2 - 3 columns"
-					label="Prix" />
-				<b:commandButton value="Ajouter" ajax="true"
-					update="updateCompteurForm" icon="plus-sign" look="success" />
-			</b:panel>
-			<b:panel rendered="#{VoitureBean.cok3}" span="12">
-				<b:label text="Chaine de distribution"></b:label>
-				<b:inputText value="" span="2" placeholder="Row 1 - 3 columns"
-					label="Date" />
-				<b:inputText value="" span="3" placeholder="Row 1 - 6 columns"
-					label="Nouveau kilométrage" />
-				<b:inputText value="" span="3" placeholder="Row 2 - 3 columns"
-					label="Prix" />
-				<b:commandButton value="Ajouter" ajax="true"
-					update="updateCompteurForm" icon="plus-sign" look="success" />
-			</b:panel>
+		<b:container layout="fluid">
+			<b:commandButton value="MAJ" ajax="true" col-md="2" offset-md="8"
+				rendered="#{VoitureBean.cok1 || VoitureBean.cok2 || VoitureBean.cok3}"
+				action="#{VoitureBean.updateEntretien}" update="updateCompteurForm"
+				look="success" />
 		</b:container>
 	</h:form>
 </h:body>

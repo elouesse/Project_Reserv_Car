@@ -69,21 +69,21 @@
 						requiredMessage="Immatriculation obligatoire" required="true">
 						<p:ajax event="blur" update="immatriculationValue" />
 					</p:inputMask>
-					<!-- <p:message for="immatriculation" /> -->
+					<p:message for="immatriculation" />
 
 					<p:outputLabel for="kilometrage" value="Kilometrage :" />
 					<p:inputNumber id="kilometrage" value="#{VoitureBean.kilometrage}"
 						requiredMessage="kilometrage obligatoire" required="true">
 						<p:ajax event="blur" update="kilometrageValue" />
 					</p:inputNumber>
-					<!-- <p:message for="kilometrage" /> -->
+					<p:message for="kilometrage" />
 
 					<p:outputLabel for="prix" value="Prix d'achat :" />
 					<p:inputNumber id="prix" value="#{VoitureBean.prix}"
 						requiredMessage="Prix obligatoire" required="true">
 						<p:ajax event="blur" update="prixValue" />
 					</p:inputNumber>
-					<!-- <p:message for="prix" /> -->
+					<p:message for="prix" />
 
 					<p:commandButton type="reset" id="revenir" value="Revenir"
 						icon="ui-icon-arrowreturnthick-1-w" action="listeVoiture?faces-redirect=true">
@@ -93,9 +93,10 @@
 						actionListener="#{VoitureBean.confirmationAdd}"
 						icon="ui-icon-check" onsuccess="PF('dlg').show()" type="submit">
 						<p:confirm header="Confirmation" message="Etes-vous sur?"
-							icon="ui-icon-alert" update="display" />
+							icon="ui-icon-alert"/>
 					</p:commandButton>
 					<p:commandButton value="Annuler" type="reset" icon="ui-icon-close" />
+					
 				</p:panelGrid>
 			</p:fieldset>
 			<!-- FIN PANNEAU -->
@@ -106,32 +107,33 @@
 
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 				<p:commandButton value="Oui" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
-					update=":addVoitureForm:carDetail" />
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":addVoitureForm:carDetailAdd">
+					</p:commandButton>
 				<p:commandButton value="Annuler" type="button"
 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 			</p:confirmDialog>
 
 			<p:dialog header="Recapitulatif" widgetVar="dlg" modal="true"
-				resizable="false" showEffect="fade" rendered="#{not empty VoitureBean.voiture}">
-				<p:outputPanel id="carDetail" style="text-align:center;">
+				resizable="false" showEffect="fade" closable="false" rendered="#{VoitureBean.creaOk}">
+				<p:outputPanel id="carDetailAdd" style="text-align:center;">
 					<p:panelGrid id="display" columns="2" columnClasses="label,value">
 						<h:outputText value="Carburant :" />
-						<h:outputText id="carburantValue" value="#{VoitureBean.carburant}" />
+						<h:outputText id="carburantValue" value="#{VoitureBean.voiture.typeCarburant}" />
 						<h:outputText value="Modele :" />
-						<h:outputText id="modeleValue" value="#{VoitureBean.modele}" />
+						<h:outputText id="modeleValue" value="#{VoitureBean.voiture.model}" />
 						<h:outputText value="Etat :" />
-						<h:outputText id="etatValue" value="#{VoitureBean.etat}" />
+						<h:outputText id="etatValue" value="#{VoitureBean.voiture.etatVoiture}" />
 						<h:outputText value="Type :" />
-						<h:outputText id="typeValue" value="#{VoitureBean.type}" />
+						<h:outputText id="typeValue" value="#{VoitureBean.voiture.typeVoiture}" />
 						<h:outputText value="Immatriculation" />
 						<h:outputText id="immatriculationValue"
-							value="#{VoitureBean.immatriculation}" />
+							value="#{VoitureBean.voiture.immatricule}" />
 						<h:outputText value="Kilometrage :" />
 						<h:outputText id="kilometrageValue"
-							value="#{VoitureBean.kilometrage}" />
+							value="#{VoitureBean.voiture.kilometrage}" />
 						<h:outputText value="Prix :" />
-						<h:outputText id="prixValue" value="#{VoitureBean.prix}" />
+						<h:outputText id="prixValue" value="#{VoitureBean.voiture.prix}" />
+						<b:commandButton icon-awesome="close" type="submit" value="Close" action="#{VoitureBean.redirectListeVoiture}"></b:commandButton>
 					</p:panelGrid>
 				</p:outputPanel>
 			</p:dialog>

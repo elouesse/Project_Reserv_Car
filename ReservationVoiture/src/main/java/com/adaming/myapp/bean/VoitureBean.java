@@ -77,7 +77,16 @@ public class VoitureBean {
 	private Boolean cok2 = false;
 	private Boolean cok3 = false;
 	private Date dateEntretienInit;
-	private Date dateEntretienValue;
+	private Boolean creaOk;
+	private Date dateEntretienValue1;
+	private Date dateEntretienValue2;
+	private Date dateEntretienValue3;
+	private Double prixEnt1;
+	private Double prixEnt2;
+	private Double prixEnt3;
+	private Double kilometrageEnt1;
+	private Double kilometrageEnt2;
+	private Double kilometrageEnt3;
 
 	/*
 	 * 
@@ -103,7 +112,7 @@ public class VoitureBean {
 		modeles.put("Bugatti", "Bugatti");
 		modeles.put("Chevrolet", "Chevrolet");
 		modeles.put("Dodge", "Dodge");
-		modeles.put("Porshce", "Porsche");
+		modeles.put("Porsche", "Porsche");
 		modeles.put("Rolce Royce", "Rolce Royce");
 		modeles.put("Audi", "Audi");
 		modeles.put("Cadillac", "Cadillac");
@@ -133,6 +142,9 @@ public class VoitureBean {
 	}
 
 	public String redirectListeVoiture() {
+		voiture = null;
+		voitureSelect = null;
+		remiseAZero();
 		return "listeVoiture?faces-redirect=true";
 	}
 
@@ -169,14 +181,14 @@ public class VoitureBean {
 	}
 
 	public void addVoiture() {
-		voiture = new Voiture(modele, immatriculation, kilometrage, prix, type, carburant, etat);
-		setVoiture(serviceVoiture.addVoiture(voiture));
+		setVoiture(serviceVoiture
+				.addVoiture(new Voiture(modele, immatriculation, kilometrage, prix, type, carburant, etat)));
 		setIdVoiture(voiture.getIdvoiture());
 		addEntretient(idVoiture);
 		refreshListe();
-		voiture = null;
+		setCreaOk(true);
 	}
-	
+
 	public void addEntretient(Long idV) {
 		setVidange(new Vidange(new Date(), kilometrage + 10000., 80));
 		setFiltreHuile(new FiltreHuile(new Date(), kilometrage + 30000., 150));
@@ -212,10 +224,10 @@ public class VoitureBean {
 		serviceVoiture.updateVoiture(voitureSelect);
 		refreshListe();
 		remiseAZero();
+		setCreaOk(false);
 	}
 
 	public void updateCompteur() {
-		System.out.println("Id : " + voitureSelect.getIdvoiture());
 		voitureSelect.setKilometrage(kilometrage);
 		serviceVoiture.updateVoiture(voitureSelect);
 		entretiens = serviceEntretien.getEntretiensOfOneCar(voitureSelect.getIdvoiture());
@@ -231,6 +243,7 @@ public class VoitureBean {
 				break;
 
 			case "FiltreHuile":
+				System.out.println("FH");
 				cok2 = serviceVoiture.alertEntretien(voitureSelect.getIdvoiture(), entretien.getIdEntretient(), 30000.);
 				if (cok2 = true) {
 					alertEntretien("Alerte", "Cette voiture a besoin d'un changement de son filtre a huile.");
@@ -238,6 +251,7 @@ public class VoitureBean {
 				break;
 
 			case "ChaineDistribution":
+				System.out.println("CD");
 				cok3 = serviceVoiture.alertEntretien(voitureSelect.getIdvoiture(), entretien.getIdEntretient(), 70000.);
 				if (cok3 = true) {
 					alertEntretien("Alerte", "Cette voiture a besoin d'un entretien de la chaine de distribution.");
@@ -576,12 +590,84 @@ public class VoitureBean {
 		this.dateEntretienInit = dateEntretienInit;
 	}
 
-	public Date getDateEntretienValue() {
-		return dateEntretienValue;
+	public Boolean getCreaOk() {
+		return creaOk;
 	}
 
-	public void setDateEntretienValue(Date dateEntretienValue) {
-		this.dateEntretienValue = dateEntretienValue;
+	public void setCreaOk(Boolean creaOk) {
+		this.creaOk = creaOk;
+	}
+
+	public Date getDateEntretienValue1() {
+		return dateEntretienValue1;
+	}
+
+	public void setDateEntretienValue1(Date dateEntretienValue1) {
+		this.dateEntretienValue1 = dateEntretienValue1;
+	}
+
+	public Date getDateEntretienValue2() {
+		return dateEntretienValue2;
+	}
+
+	public void setDateEntretienValue2(Date dateEntretienValue2) {
+		this.dateEntretienValue2 = dateEntretienValue2;
+	}
+
+	public Date getDateEntretienValue3() {
+		return dateEntretienValue3;
+	}
+
+	public void setDateEntretienValue3(Date dateEntretienValue3) {
+		this.dateEntretienValue3 = dateEntretienValue3;
+	}
+
+	public Double getPrixEnt1() {
+		return prixEnt1;
+	}
+
+	public void setPrixEnt1(Double prixEnt1) {
+		this.prixEnt1 = prixEnt1;
+	}
+
+	public Double getPrixEnt2() {
+		return prixEnt2;
+	}
+
+	public void setPrixEnt2(Double prixEnt2) {
+		this.prixEnt2 = prixEnt2;
+	}
+
+	public Double getPrixEnt3() {
+		return prixEnt3;
+	}
+
+	public void setPrixEnt3(Double prixEnt3) {
+		this.prixEnt3 = prixEnt3;
+	}
+
+	public Double getKilometrageEnt1() {
+		return kilometrageEnt1;
+	}
+
+	public void setKilometrageEnt1(Double kilometrageEnt1) {
+		this.kilometrageEnt1 = kilometrageEnt1;
+	}
+
+	public Double getKilometrageEnt2() {
+		return kilometrageEnt2;
+	}
+
+	public void setKilometrageEnt2(Double kilometrageEnt2) {
+		this.kilometrageEnt2 = kilometrageEnt2;
+	}
+
+	public Double getKilometrageEnt3() {
+		return kilometrageEnt3;
+	}
+
+	public void setKilometrageEnt3(Double kilometrageEnt3) {
+		this.kilometrageEnt3 = kilometrageEnt3;
 	}
 
 }
