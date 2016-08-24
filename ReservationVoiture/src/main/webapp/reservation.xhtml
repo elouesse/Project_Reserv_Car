@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Liste des Reservations</title>
+</h:head>
+
+<h:body>
+	<ui:include src="nav-bar.xhtml" />
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<p:dataTable var="rsv" value="#{ReservationBean.tabR}"
+			paginator="true" rows="7" styleClass="paginated" reflow="true"
+			editable="true">
+			<f:facet name="header">
+            Liste Des Reservations
+        	</f:facet>
+
+			<p:ajax event="rowEdit" listener="#{ReservationBean.onRowEdit}"
+				update=":form:msgs" />
+
+
+			<p:column headerText="ID Reservation">
+				<h:outputText value="#{rsv.idreservation}" />
+			</p:column>
+			<p:column headerText="Date de Reservation">
+				<h:outputText value="#{rsv.dateDeReservation}">
+					<f:convertDateTime pattern="MMM,dd,yyyy 'at' hh:mm" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Date de Sortie">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{rsv.dateDeSortie}">
+							<f:convertDateTime pattern="EEE, MMM d, yyyy" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar id="date1" value="#{rsv.dateDeSortie}"
+							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit}" >
+							<p:ajax event="dateSelect" listener="#{addReservation.chooseDate}" update="date2" render="date2"/>
+						</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Date de Retour">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{rsv.dateDeRentrer}">
+							<f:convertDateTime pattern="EEE, MMM d, yyyy" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar id="date2" value="#{rsv.dateDeRentrer}"
+							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit2}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Prix de Reservation">
+				<h:outputText value="#{rsv.prix}" >
+					<f:convertNumber currencySymbol="$" type="currency"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Nombre de Jours Reserves">
+				<h:outputText value="#{rsv.nombresDeJours}" />
+			</p:column>
+			<p:column headerText="Heure de Sortie">
+				<h:outputText value="#{rsv.heureDeSortie}h" />
+			</p:column>
+			<p:column headerText="Heure de Retour">
+				<h:outputText value="#{rsv.heureDeRentrer}h" />
+			</p:column>
+			<p:column headerText="Etat de Reservation">
+				<h:outputText value="#{rsv.etatDeReservation}" />
+			</p:column>
+			<p:column headerText="Nom">
+				<h:outputText value="#{rsv.client.nom}" />
+			</p:column>
+			<p:column headerText="Prenom">
+				<h:outputText value="#{rsv.client.prenom}" />
+			</p:column>
+			<p:column headerText="ID Voiuture">
+				<h:outputText value="#{rsv.voiture.idvoiture}" />
+			</p:column>
+			<p:column headerText="Model Voiuture">
+				<h:outputText value="#{rsv.voiture.model}" />
+			</p:column>
+
+			<p:column headerText="Actions" style="width:100px;text-align: center">
+
+				<!-- <p:commandButton update=":form:clientDetail"
+					oncomplete="PF('clientDialog').show()" icon="ui-icon-search"
+					title="Afficher Client">
+					<f:setPropertyActionListener value="#{rsv.client}"
+						target="#{ReservationBean.client}" />
+				</p:commandButton> -->
+
+				<p:commandButton update=":form:voitureDetail"
+					oncomplete="PF('carDialog').show()" icon="ui-icon-euro"
+					title="Afficher Voiture">
+					<f:setPropertyActionListener value="#{rsv.voiture}"
+						target="#{ReservationBean.voiture}" />
+				</p:commandButton>
+
+				<!-- <p:commandButton update=":billDetail"
+					oncomplete="PF('billDialog').show()" icon="ui-icon-euro"
+					title="Afficher Facture">
+					<f:setPropertyActionListener value="#{rsv}"
+						target="#{ReservationBean.reserv}" />
+				</p:commandButton> -->
+
+				<p:rowEditor title="Modifier" />
+
+			</p:column>
+		</p:dataTable>
+
+
+		<!-- 		Voir info Voiture -->
+		<p:dialog header="Info Voiture" widgetVar="carDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="voitureDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty ReservationBean.voiture}"
+					columnClasses="label,value">
+
+					<p:outputLabel for="seeId" value="Id:" />
+					<p:outputLabel id="seeId"
+						value="#{ReservationBean.voiture.idvoiture}" />
+
+					<p:outputLabel for="seeMod" value="Model:" />
+					<p:outputLabel id="seeMod" value="#{ReservationBean.voiture.model}" />
+
+					<p:outputLabel for="seeTag" value="Immatricule:" />
+					<p:outputLabel id="seeTag"
+						value="#{ReservationBean.voiture.immatricule}" />
+
+					<p:outputLabel for="seeMil" value="Kilometrage:" />
+					<p:outputLabel id="seeMil"
+						value="#{ReservationBean.voiture.kilometrage}" />
+
+					<p:outputLabel for="seePri" value="Prix Par Jour:" />
+					<p:outputLabel id="seePri" value="#{ReservationBean.voiture.prix}" />
+
+					<p:outputLabel for="seeTyp" value="Type de Voiture:" />
+					<p:outputLabel id="seeTyp"
+						value="#{ReservationBean.voiture.typeVoiture}" />
+
+					<p:outputLabel for="seeFue" value="Type de Carburant:" />
+					<p:outputLabel id="seeFue"
+						value="#{ReservationBean.voiture.typeCarburant}" />
+
+					<p:outputLabel for="seeSta" value="Etat:" />
+					<p:outputLabel id="seeSta"
+						value="#{ReservationBean.voiture.etatVoiture}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

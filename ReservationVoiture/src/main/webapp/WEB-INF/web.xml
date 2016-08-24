@@ -25,7 +25,7 @@
 	<!-- choisir un theme -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>trontastic</param-value>
+		<param-value>start</param-value>
 	</context-param>
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

@@ -56,8 +56,6 @@ public class EntretienBean {
 		return "updateEntretien?faces-redirect=true";
 	}
 
-	
-
 	public void deleteEntr() {
 
 		service.deleteEntretien(idEntretient);

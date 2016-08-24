@@ -7,7 +7,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:b="http://bootsfaces.net/ui">
 
-	<b:navBar brand="Gcar" brandHref="#" inverse="true" position="left"
+	<b:navBar brand="Gcar" brandHref="#" inverse="false" position="left"
 		sticky="true">
 		<b:navbarLinks>
 			<b:navLink iconAwesome="home" value="Accueil" href="index.xhtml"></b:navLink>
@@ -21,7 +21,7 @@
 			<b:dropMenu value="Réservations" iconAwesome="calendar"
 				iconAlign="right">
 				<b:navLink value="Liste des réservations"
-					href="getReservations.xhtml"></b:navLink>
+					href="reservation.xhtml"></b:navLink>
 				<b:dropMenu value="Actions">
 					<b:navLink value="Ajouter une réservation"
 						href="addReservation.xhtml"></b:navLink>
@@ -36,8 +36,8 @@
 			</b:dropMenu>
 			<b:dropMenu value="Entretiens" iconAwesome="wrench" iconAlign="right">
 				<b:navLink value="Entretiens" href="entretien.xhtml"></b:navLink>
-				<b:dropMenu value="Actions">
-					<b:navLink value="Ajouter un entretien" href="addEntretien.xhtml"></b:navLink>
+				<b:dropMenu value="Actions" >
+					<!-- <b:navLink value="Ajouter un entretien" href="addEntretien.xhtml"></b:navLink> -->
 				</b:dropMenu>
 			</b:dropMenu>
 		</b:navbarLinks>

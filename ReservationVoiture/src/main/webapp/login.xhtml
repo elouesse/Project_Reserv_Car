@@ -1,48 +1,44 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="j_idt2">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:b="http://bootsfaces.net/ui">
+<h:head id="j_idt2">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sign In Template for BootsFaces</title>
 <meta name="author" content="Riccardo Massera" />
 <style type="text/css">
 .form-signin {
-	margin: 0 auto;
-	max-width: 330px;
-	padding: 15px;
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 15px;
+}
+body {
+background-image:url(resources/images/288812.jpg);
+background-size: 100% 380%;
+background-repeat: no-repeat;
 }
 </style>
-<link type="text/css" rel="stylesheet"
-	href="/Examples/javax.faces.resource/css/spacelab/bsf.css.jsf?ln=bsf" />
-<link type="text/css" rel="stylesheet"
-	href="/Examples/javax.faces.resource/css/spacelab/theme.css.jsf?ln=bsf" />
-<link type="text/css" rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
-<!--[if lt IE 9]><script src="/Examples/javax.faces.resource/js/html5shiv.js.jsf?ln=bsf"></script><script src="/Examples/javax.faces.resource/js/respond.js.jsf?ln=bsf"></script><![endif]-->
-<link type="text/css" rel="stylesheet"
-	href="/Examples/javax.faces.resource/css/spacelab/tooltip.css.jsf?ln=bsf" />
-<link type="text/css" rel="stylesheet"
-	href="/Examples/javax.faces.resource/css/spacelab/core.css.jsf?ln=bsf" />
-<link type="text/css" rel="stylesheet"
-	href="/Examples/javax.faces.resource/css/icons.css.jsf?ln=bsf" />
-<script type="text/javascript"
-	src="/Examples/javax.faces.resource/jq/jquery.js.jsf?ln=bsf"></script>
-<script type="text/javascript"
-	src="/Examples/javax.faces.resource/jsf.js.jsf?ln=javax.faces"></script>
-<script type="text/javascript"
-	src="/Examples/javax.faces.resource/js/tooltip.js.jsf?ln=bsf"></script>
-<script type="text/javascript"
-	src="/Examples/javax.faces.resource/js/bsf.js.jsf?ln=bsf"></script>
-</head>
-<body style="padding-top: 60px; background-color: #add;">
-	<div id="j_idt5" class="container">
-		<form action=" j_spring_security_check" method="POST">
-    <label for="j_username">User Id: </label>
-    <input id="j_username" name="j_username" type="text" />
-    <label for="j_password">Password: </label>
-    <input id="j_password" name="j_password" type="password"/>
-    <input type="submit" value="Submit"/>
-</form>	
-	</div>
-</body>
+</h:head>
+<h:body>
+<p:panel id="pnl" header="Login" style="margin-left:500px;margin-right:500px;">
+    
+        <form action=" j_spring_security_check" method="POST">
+    <h:outputLabel for="j_username" value="User Id  :"></h:outputLabel>
+    <p:inputText id="j_username" name="j_username" type="text" />
+    <br></br>
+    <h:outputLabel for="j_password" value="Password :"></h:outputLabel>
+    <p:inputText  id="j_password" name="j_password" type="password"/>
+        <br></br>
+    
+    <input type="submit" value="Submit" />
+</form>   
+    
+    
+</p:panel>
+<p:draggable for="pnl" /> 
+</h:body>
 </html>

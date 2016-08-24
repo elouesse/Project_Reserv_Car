@@ -81,7 +81,8 @@ public class AddReservationBean {
 	
 	public void chooseDate() {
 		dateInit2=dateDeSortie;
-		dateDeRentrer = dateInit2;
+		if(dateDeRentrer.before(dateInit2))
+			dateDeRentrer = dateInit2;
 	}
 	
 	public void getClient() {
@@ -105,8 +106,8 @@ public class AddReservationBean {
 
 	public void addReserv() {
 		prix = nombresDeJours*rentedCar.getPrix();
-		Reservation r = new Reservation(prix, dateDeReservation, dateDeRentrer, dateDeSortie, heureDeSortie, nombresDeJours,
-				etatDeReservation,heureDeRentrer);
+		Reservation r = new Reservation(prix, dateDeReservation, dateDeRentrer, dateDeSortie, heureDeSortie, heureDeRentrer,
+				etatDeReservation,nombresDeJours);
 		serviceReservation.addReservation(r, idClient, rentedCar.getIdvoiture());
 		serviceFacture.addFacture(1l, r.getIdreservation(), new Facture(dateDeReservation));
 		this.tabV = null;

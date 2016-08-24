@@ -1,186 +1,132 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:h="http://xmlns.jcp.org/jsf/html">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui">
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Client</title>
 	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <h:body>
 
-<div class="test"><p>Bonjouuuuuuuuuuuuuur</p></div>
+	<ui:include id="top" src="nav-bar.xhtml" />
 
-
-	<h:form>
-		<p:dataTable var="client" value="#{ClientB.clients}" paginator="true"
-			rows="8" styleClass="paginated">
-			<f:facet name="header">
-            Liste des clients
-        </f:facet>
-			<p:column headerText="Id">
-				<h:outputText value="#{client.idClient}" />
-			</p:column>
-
-			<p:column headerText="Nom">
-				<h:outputText value="#{client.nom}" />
-			</p:column>
-
-			<p:column headerText="Prenom">
-				<h:outputText value="#{client.prenom}" />
-			</p:column>
-
-			<p:column headerText="Pays">
-				<h:outputText value="#{client.pays}" />
-			</p:column>
-
-			<p:growl id="messages" />
-			<p:column headerText="Button">
-				<p:commandButton type="button" title="Modifier" icon="ui-icon-wrench" />
-				
-			</p:column>
-		</p:dataTable>
-	</h:form>
 	<p:fieldset>
-	
-	
-	
-	
-	 <h:form>
+		<h:form>
+			<p:dataTable var="client" value="#{ClientB.clients}" paginator="true"
+				filteredValue="#{ClientB.clientsFiltre}" widgetVar="clientTable"
+				emptyMessage="Aucun client correspondant Ã  votre recherche"
+				rows="10" styleClass="paginated">
+				<f:facet name="header">
+            Liste des clients
+            <p:outputPanel>
+						<h:outputText value="Search all fields:" />
+						<p:inputText id="globalFilter"
+							onkeyup="PF('clientTable').filter()" style="width:150px"
+							placeholder="Enter keyword" />
+					</p:outputPanel>
+				</f:facet>
+				<p:column headerText="Id">
+					<h:outputText value="#{client.idClient}" />
+				</p:column>
 
-	<!--  <ui:repeat value="#{ClientB.clients}" var="c">
-	 #{c.idClient}
-	</ui:repeat> -->
-	
+				<p:column headerText="Nom" filterBy="#{client.nom}">
+					<h:outputText value="#{client.nom}" />
+				</p:column>
 
-	
-	<div style="float: left">
-	<p:selectOneMenu  value="#{ClientB.idClient}" >
-		<f:selectItems value="#{ClientB.clients}" var="c"
-		itemLabel="#{c.idClient}" itemValue="#{c.idClient}"
-		/>
-	</p:selectOneMenu> 
-	<p:commandButton update="display" action="#{ClientB.getClie}" value="Chercher"></p:commandButton>
-	<h:panelGrid id="display">
-	<h:outputText  value="#{ClientB.cli.idClient}"/>
-	<h:outputText  value="#{ClientB.cli.nom}"/>
-	<h:outputText value="#{ClientB.cli.prenom}"/>
-	<h:outputText value="#{ClientB.cli.dateDeNaissance}"/>
-	<h:outputText  value="#{ClientB.cli.numeroTel}"/>
-	<h:outputText value="#{ClientB.cli.numeroPermis}"/>
-	<h:outputText  value="#{ClientB.cli.adressPostal}"/>
-	<h:outputText value="#{ClientB.cli.mail}"/>
-	<h:outputText  value="#{ClientB.cli.pays}"/>
-	<h:outputText value="#{ClientB.cli.dateDeDelivrance}"/>
-	<h:outputText value="#{ClientB.cli.lieuDeNaissance}"/>
-	<h:outputText  value="#{ClientB.cli.delivrerPar}"/>
-	</h:panelGrid>
-	</div>
+				<p:column headerText="Prenom" filterBy="#{client.prenom}">
+					<h:outputText value="#{client.prenom}" />
+				</p:column>
 
-	</h:form> 
-	
-	<h:form >
+				<p:column headerText="Mail">
+					<h:outputText value="#{client.mail}" />
+				</p:column>
 
-	<div style="float: right">
-				
-	
-		<h:panelGrid id="displayU">
-			
-		
-				<tr>
-				<td><h:outputText value="Identifiant"/></td>
-					<td><p:selectOneMenu  value="#{ClientB.idClientU}">
-						<f:selectItems value="#{ClientB.clients}" var="c"
-							itemLabel="#{c.idClient}" itemValue="#{c.idClient}" />
-					</p:selectOneMenu></td>
-					
-				</tr>
-				
-				
-				<tr>
-					<td><h:outputText value="Nom" /></td>
-					<td><p:inputText id="nom" requiredMessage="Indiquez nom!"
-							required="true" value="#{ClientB.nomU}" /></td>
-				</tr>
-				
-				<tr>
-					<td><h:outputText value="Prénom" /></td>
-					<td><p:inputText id="prenom"
-							requiredMessage="Indiquez prénom!" required="true"
-							value="#{ClientB.prenomU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Date de naissance" /></td>
-					<td>
-						<!-- <h:inputText id="dateDeNaissance"
-						requiredMessage="Dateeeeeeeeee" required="true"
-						value="#{ClientB.dateDeNaissance}"> --> <!-- <f:convertDateTime pattern="yyyy/MM/dd" /> -->
-						<p:calendar id="dateDeNaissance" locale="fr" required="true"
-							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
-							value="#{ClientB.dateDeNaissanceU}">
-						</p:calendar>
-					</td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Tél" /></td>
-					<td><p:inputText id="tel" requiredMessage="Indiquez numéro!"
-							required="true"  value="#{ClientB.numeroTelU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="N°permis" /></td>
-					<td><p:inputText id="numpermis" requiredMessage="Indiquez n°!"
-							required="true" value="#{ClientB.numeroPermisU}" /></td>
+				<p:column headerText="Pays">
+					<h:outputText value="#{client.pays}" />
+				</p:column>
 
-				</tr>
-				<tr>
-					<td><h:outputText value="Adresse" /></td>
-					<td><p:inputText id="adr" requiredMessage="Indiquez adresse!"
-							required="true" value="#{ClientB.adressPostalU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Mail" /></td>
-					<td><p:inputText id="mail" requiredMessage="Indiquez mail!"
-							required="true" value="#{ClientB.mailU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Pays" /></td>
-					<td><p:inputText id="pays" requiredMessage="Indiquez pays!"
-							required="true" value="#{ClientB.paysU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Date de délivrance" /></td>
-					<td><p:calendar id="dateD" locale="fr" required="true"
-							requiredMessage="Indiquez date!" pattern="yyyy/MM/dd"
-							value="#{ClientB.dateDeDelivranceU}">
-						</p:calendar></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Lieu de naissance" /></td>
-					<td><p:inputText id="lieu" requiredMessage="Indiquez lieu!"
-							required="true" value="#{ClientB.lieuDeNaissanceU}" /></td>
-				</tr>
-				<tr>
-					<td><h:outputText value="Délivré par" /></td>
-					<td><p:inputText id="del" requiredMessage="Remplir champ!"
-							required="true" value="#{ClientB.delivrerParU}" /></td>
-			</tr>
-	
-			</h:panelGrid>
-			
-			
-			
-			<p:commandButton update="displayU" action="#{ClientB.getClieU}" value="Chercher"/>
-			
-			
-			
-			<p:commandButton value="Modifier" action="#{ClientB.update}"/>
-		</div>	
 
-	</h:form>
+			</p:dataTable>
+		</h:form>
 	</p:fieldset>
+	<br></br>
+	<!-- 	Formulaire pour modifier un client -->
+
+	<p:fieldset>
+		<h:form>
+			<div style="text-align: center; font-size: 20px">Recherche et
+				mise Ã  jour client</div>
+			<br></br>
+			<div style="text-align: center">
+				<p:selectOneMenu value="#{ClientB.idClient}">
+					<f:selectItems value="#{ClientB.clients}" var="c"
+						itemLabel="#{c.idClient} : #{c.nom}" itemValue="#{c.idClient}" />
+				</p:selectOneMenu>
+			</div>
+			<p:commandButton update="display" action="#{ClientB.getClie}"
+				value="Chercher"></p:commandButton>
+			<br></br>
+			<h:panelGrid id="display" columns="4">
+				<h:outputText value="Nom:" />
+				<p:inputText value="#{ClientB.cli.nom}" />
+
+				<h:outputText value="PrÃ©nom:" />
+				<p:inputText value="#{ClientB.cli.prenom}" />
+
+				<h:outputText value="Date de naissance:" />
+				<p:outputLabel value="#{ClientB.cli.dateDeNaissance}" />
+
+				<h:outputText value="TÃ©lÃ©phone:" />
+				<p:inputText value="#{ClientB.cli.numeroTel}" />
+
+				<h:outputText value="NÂ° permis:" />
+				<p:inputText value="#{ClientB.cli.numeroPermis}" />
+
+				<h:outputText value="Adresse:" />
+				<p:inputText value="#{ClientB.cli.adressPostal}" />
+
+				<h:outputText value="Mail:" />
+				<p:inputText value="#{ClientB.cli.mail}" />
+
+				<h:outputText value="Pays:" />
+				<p:inputText value="#{ClientB.cli.pays}" />
+
+				<h:outputText value="Date de dÃ©livrance:" />
+				<h:outputLabel value="#{ClientB.cli.dateDeDelivrance}" />
+
+				<h:outputText value="Lieu de naissance:" />
+				<h:outputLabel value="#{ClientB.cli.lieuDeNaissance}" />
+
+				<h:outputText value="DÃ©livrÃ© par:" />
+				<p:inputText value="#{ClientB.cli.delivrerPar}" />
+
+				<p:growl id="message" showDetail="true" />
+				<p:commandButton value="Modifier" action="#{ClientB.update}"
+					actionListener="#{ClientB.destroyWorld2}" update="message">
+					<p:confirm header="Confirmation" message="Are you sure to update?"
+						icon="ui-icon-alert" />
+				</p:commandButton>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Yes" actionListener="#{ClientB.update}"
+						type="button" styleClass="ui-confirmdialog-yes"
+						icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+
+
+			</h:panelGrid>
+		</h:form>
+	</p:fieldset>
+
+
 
 </h:body>
 </html>

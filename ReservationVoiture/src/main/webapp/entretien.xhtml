@@ -15,12 +15,12 @@
 
 
 <h:body>
-
-
+	<ui:include src="nav-bar.xhtml" />
+    <p:commandButton actionListener="#{EntretienBean.getEntretens}" id="iconOnly"  icon="ui-icon-disk" title="Icon Only" />
 
 	<h:form id="formEntretient">
 		<p:dataTable var="entr" id="entretienList" value="#{EntretienBean.entretiens}"
-			paginator="true" rows="13" styleClass="paginated"
+			paginator="true" rows="10" styleClass="paginated"
 			 widgetVar="entretienTable" filteredValue="#{EntretienBean.fentretiens}" >
 			 	<f:facet name="header">
 			 	
@@ -59,7 +59,7 @@
 			</p:column>
 			<p:column headerText="Kilometrage"
 			sortBy="#{entr.kilometrage}">
-				<h:outputText value="#{entr.prixEntrtient}" />
+				<h:outputText value="#{entr.kilometrage}" />
 			</p:column>
 			
 			<p:column headerText="Prix"
