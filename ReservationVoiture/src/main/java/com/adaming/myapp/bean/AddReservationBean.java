@@ -8,9 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -67,21 +69,27 @@ public class AddReservationBean {
 	private Date dateInit2;
 	private Voiture selectedCar;
 	private Voiture rentedCar;
+	private Voiture voiture;
 	private Client customer;
+	
+	private Reservation reserv;
+	private List<Reservation> tabR;
 
 	private List<Voiture> tabV;
 	private List<Client> tabC;
 	
+	
 	@PostConstruct
     public void init() {
 		tabC= serviceClient.getClients();
+		tabR= serviceReservation.getHistorique();
 		dateInit = new Date();
 		dateInit2=dateInit;
 	}
 	
 	public void chooseDate() {
 		dateInit2=dateDeSortie;
-		if(dateDeRentrer.before(dateInit2))
+//		if(dateDeRentrer.before(dateInit2))
 			dateDeRentrer = dateInit2;
 	}
 	
@@ -113,7 +121,23 @@ public class AddReservationBean {
 		this.tabV = null;
 		this.dateDeRentrer = null;
 		this.dateDeSortie = null;
+		init();
 	}
+	
+	public void onRowEdit(RowEditEvent event) {
+		reserv = (Reservation) event.getObject();
+		reserv.setHeureDeSortie(Integer.toString(reserv.getDateDeSortie().getHours()));
+		reserv.setHeureDeRentrer(Integer.toString(reserv.getDateDeRentrer().getHours()));
+		DateTime d1 = new DateTime(reserv.getDateDeSortie());
+		DateTime d2 = new DateTime(reserv.getDateDeRentrer());
+		nombresDeJours = Days.daysBetween(d1.toLocalDate(), d2.toLocalDate()).getDays();
+		reserv.setNombresDeJours(nombresDeJours);
+		reserv.setEtatDeReservation("Modifie");
+		reserv.setPrix(reserv.getVoiture().getPrix()*reserv.getNombresDeJours());
+		serviceReservation.updateReservation(reserv);
+        FacesMessage msg = new FacesMessage("Reservation "+reserv.getIdreservation()+" Edited");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 	
 	public void reset() {
 		this.tabV = null;
@@ -323,6 +347,30 @@ public class AddReservationBean {
 
 	public void setDateInit2(Date dateInit2) {
 		this.dateInit2 = dateInit2;
+	}
+
+	public Voiture getVoiture() {
+		return voiture;
+	}
+
+	public void setVoiture(Voiture voiture) {
+		this.voiture = voiture;
+	}
+
+	public Reservation getReserv() {
+		return reserv;
+	}
+
+	public void setReserv(Reservation reserv) {
+		this.reserv = reserv;
+	}
+
+	public List<Reservation> getTabR() {
+		return tabR;
+	}
+
+	public void setTabR(List<Reservation> tabR) {
+		this.tabR = tabR;
 	}
 
 }

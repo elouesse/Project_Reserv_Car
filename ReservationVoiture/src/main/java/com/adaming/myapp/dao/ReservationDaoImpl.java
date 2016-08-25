@@ -50,7 +50,7 @@ public class ReservationDaoImpl implements IReservationDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Reservation> getHistorique() {
-		Query req = em.createQuery("from Reservation");
+		Query req = em.createQuery("from Reservation r order by r.dateDeReservation DESC");
 		log.info("La liste de reservations contient "+req.getResultList().size());
 		return req.getResultList();
 	}

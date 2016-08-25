@@ -15,14 +15,14 @@
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
 
-		<p:dataTable var="rsv" value="#{ReservationBean.tabR}"
+		<p:dataTable var="rsv" value="#{addReservation.tabR}"
 			paginator="true" rows="7" styleClass="paginated" reflow="true"
 			editable="true">
 			<f:facet name="header">
             Liste Des Reservations
         	</f:facet>
 
-			<p:ajax event="rowEdit" listener="#{ReservationBean.onRowEdit}"
+			<p:ajax event="rowEdit" listener="#{addReservation.onRowEdit}"
 				update=":form:msgs" />
 
 
@@ -43,8 +43,8 @@
 					</f:facet>
 					<f:facet name="input">
 						<p:calendar id="date1" value="#{rsv.dateDeSortie}"
-							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit}" >
-							<p:ajax event="dateSelect" listener="#{addReservation.chooseDate}" update="date2" render="date2"/>
+							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit}" required="true" >
+							<p:ajax event="dateSelect" listener="#{addReservation.chooseDate}" update="date2" render="date2" />
 						</p:calendar>
 					</f:facet>
 				</p:cellEditor>
@@ -58,7 +58,7 @@
 					</f:facet>
 					<f:facet name="input">
 						<p:calendar id="date2" value="#{rsv.dateDeRentrer}"
-							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit2}" />
+							pattern="MM/dd/yyyy HH" navigator="true" pages="2" mindate="#{addReservation.dateInit2}" required="true" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -105,7 +105,7 @@
 					oncomplete="PF('carDialog').show()" icon="ui-icon-euro"
 					title="Afficher Voiture">
 					<f:setPropertyActionListener value="#{rsv.voiture}"
-						target="#{ReservationBean.voiture}" />
+						target="#{addReservation.voiture}" />
 				</p:commandButton>
 
 				<!-- <p:commandButton update=":billDetail"
@@ -126,38 +126,38 @@
 			showEffect="fade" hideEffect="fade" resizable="false">
 			<p:outputPanel id="voitureDetail" style="text-align:center;">
 				<p:panelGrid columns="2"
-					rendered="#{not empty ReservationBean.voiture}"
+					rendered="#{not empty addReservation.voiture}"
 					columnClasses="label,value">
 
 					<p:outputLabel for="seeId" value="Id:" />
 					<p:outputLabel id="seeId"
-						value="#{ReservationBean.voiture.idvoiture}" />
+						value="#{addReservation.voiture.idvoiture}" />
 
 					<p:outputLabel for="seeMod" value="Model:" />
-					<p:outputLabel id="seeMod" value="#{ReservationBean.voiture.model}" />
+					<p:outputLabel id="seeMod" value="#{addReservation.voiture.model}" />
 
 					<p:outputLabel for="seeTag" value="Immatricule:" />
 					<p:outputLabel id="seeTag"
-						value="#{ReservationBean.voiture.immatricule}" />
+						value="#{addReservation.voiture.immatricule}" />
 
 					<p:outputLabel for="seeMil" value="Kilometrage:" />
 					<p:outputLabel id="seeMil"
-						value="#{ReservationBean.voiture.kilometrage}" />
+						value="#{addReservation.voiture.kilometrage}" />
 
 					<p:outputLabel for="seePri" value="Prix Par Jour:" />
 					<p:outputLabel id="seePri" value="#{ReservationBean.voiture.prix}" />
 
 					<p:outputLabel for="seeTyp" value="Type de Voiture:" />
 					<p:outputLabel id="seeTyp"
-						value="#{ReservationBean.voiture.typeVoiture}" />
+						value="#{addReservation.voiture.typeVoiture}" />
 
 					<p:outputLabel for="seeFue" value="Type de Carburant:" />
 					<p:outputLabel id="seeFue"
-						value="#{ReservationBean.voiture.typeCarburant}" />
+						value="#{addReservation.voiture.typeCarburant}" />
 
 					<p:outputLabel for="seeSta" value="Etat:" />
 					<p:outputLabel id="seeSta"
-						value="#{ReservationBean.voiture.etatVoiture}" />
+						value="#{addReservation.voiture.etatVoiture}" />
 				</p:panelGrid>
 			</p:outputPanel>
 		</p:dialog>

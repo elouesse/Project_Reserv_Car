@@ -81,9 +81,9 @@ public class VoitureBean {
 	private Date dateEntretienValue1;
 	private Date dateEntretienValue2;
 	private Date dateEntretienValue3;
-	private Double prixEnt1;
-	private Double prixEnt2;
-	private Double prixEnt3;
+	private int prixEnt1;
+	private int prixEnt2;
+	private int prixEnt3;
 	private Double kilometrageEnt1;
 	private Double kilometrageEnt2;
 	private Double kilometrageEnt3;
@@ -196,6 +196,38 @@ public class VoitureBean {
 		serviceEntretien.addEntretien(getVidange(), idV);
 		serviceEntretien.addEntretien(getFiltreHuile(), idV);
 		serviceEntretien.addEntretien(getChaineDist(), idV);
+	}
+	
+	public void updateEntretien() {
+		
+		// vidange
+		if (cok1 == true) {
+			Long Id1 = entretiens.get(0).getIdEntretient();
+			Entretien ent1 = serviceEntretien.getEntretienById(Id1);
+			ent1.setDateEntretient(dateEntretienValue1);
+			ent1.setKilometrage(kilometrageEnt1);
+			ent1.setPrixEntrtient(prixEnt1);
+			serviceEntretien.updateEntretien(ent1);
+		}
+		// filtre a huile
+		if (cok2 == true) {
+			Long Id2 = entretiens.get(1).getIdEntretient();
+			Entretien ent2 = serviceEntretien.getEntretienById(Id2);
+			ent2.setDateEntretient(dateEntretienValue2);
+			ent2.setKilometrage(kilometrageEnt2);
+			ent2.setPrixEntrtient(prixEnt2);
+			serviceEntretien.updateEntretien(ent2);
+		}
+		// chaine de distribution
+		if (cok3 == true) {
+			Long Id3 = entretiens.get(2).getIdEntretient();
+			Entretien ent3 = serviceEntretien.getEntretienById(Id3);
+			ent3.setDateEntretient(dateEntretienValue3);
+			ent3.setKilometrage(kilometrageEnt3);
+			ent3.setPrixEntrtient(prixEnt3);
+			serviceEntretien.updateEntretien(ent3);
+		}
+		
 	}
 
 	public void updateVoiture() {
@@ -622,27 +654,27 @@ public class VoitureBean {
 		this.dateEntretienValue3 = dateEntretienValue3;
 	}
 
-	public Double getPrixEnt1() {
+	public int getPrixEnt1() {
 		return prixEnt1;
 	}
 
-	public void setPrixEnt1(Double prixEnt1) {
+	public void setPrixEnt1(int prixEnt1) {
 		this.prixEnt1 = prixEnt1;
 	}
 
-	public Double getPrixEnt2() {
+	public int getPrixEnt2() {
 		return prixEnt2;
 	}
 
-	public void setPrixEnt2(Double prixEnt2) {
+	public void setPrixEnt2(int prixEnt2) {
 		this.prixEnt2 = prixEnt2;
 	}
 
-	public Double getPrixEnt3() {
+	public int getPrixEnt3() {
 		return prixEnt3;
 	}
 
-	public void setPrixEnt3(Double prixEnt3) {
+	public void setPrixEnt3(int prixEnt3) {
 		this.prixEnt3 = prixEnt3;
 	}
 

@@ -148,6 +148,7 @@ public class FactureBean {
 	public void getInfoFact(){
 		facture = service.getFactureById(idFacture);
 		prix = service.coutFacture(idFacture);
+		getFacts();
 	}
 	
 }

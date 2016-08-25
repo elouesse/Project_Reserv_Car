@@ -38,7 +38,8 @@
 	
 	<!-- security -->
 	<security:http pattern="/Login" security="none"/> 
-	<security:http pattern="/resources/**" security="none"/> 
+	<security:http pattern="/resources/**" security="none"/>
+	<security:http pattern="/javax.faces.ressource/**" security="none"/>
 	<security:http auto-config="true">
 		 <security:access-denied-handler error-page="/accessDeniedPage" />
 		<security:intercept-url pattern="/**" access="ROLE_ADMIN" />

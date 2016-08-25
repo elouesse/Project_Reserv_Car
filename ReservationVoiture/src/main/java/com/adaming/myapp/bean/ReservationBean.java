@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +50,9 @@ public class ReservationBean {
 
 	private Reservation reserv;
 	private List<Reservation> tabR;
+	private Date dateInit;
+	private Date dateInit2;
+
 	
 	public ReservationBean() {
 	}
@@ -59,8 +63,19 @@ public class ReservationBean {
 	
 	@PostConstruct
     public void init() {
+		listReservation();
+	}
+	
+	public void listReservation(){
 		tabR= serviceReservation.getHistorique();
 	}
+	
+	public void chooseDate(SelectEvent dateSortie) {
+		dateInit2=(Date) dateSortie.getObject();
+		dateDeRentrer = dateInit2;
+		listReservation();
+	}
+
 	
 	public void onRowEdit(RowEditEvent event) {
 		reserv = (Reservation) event.getObject();
@@ -75,6 +90,7 @@ public class ReservationBean {
 		serviceReservation.updateReservation(reserv);
         FacesMessage msg = new FacesMessage("Reservation "+reserv.getIdreservation()+" Edited");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        listReservation();
     }
 
 	public double getPrix() {
@@ -171,6 +187,22 @@ public class ReservationBean {
 
 	public void setReserv(Reservation reserv) {
 		this.reserv = reserv;
+	}
+
+	public Date getDateInit() {
+		return dateInit;
+	}
+
+	public void setDateInit(Date dateInit) {
+		this.dateInit = dateInit;
+	}
+
+	public Date getDateInit2() {
+		return dateInit2;
+	}
+
+	public void setDateInit2(Date dateInit2) {
+		this.dateInit2 = dateInit2;
 	}
 
 }
